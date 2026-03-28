@@ -1251,10 +1251,11 @@
       <li><a href="#work">Case Studies</a></li>
       <li><a href="#pricing">Pricing</a></li>
     </ul>
-    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Tiruppur, India</p>
+    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Chennai, India</p>
   </div>
 </footer>
 
+<script>
   // Intersection Observer for fade-in
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
@@ -1277,4 +1278,16 @@
   // Nav scroll effect
   window.addEventListener('scroll', () => {
     const nav = document.querySelector('nav');
+    if (window.scrollY > 16) {
+      nav.style.backdropFilter = 'blur(24px)';
+      nav.style.background = 'rgba(5,8,20,0.90)';
+    } else {
+      nav.style.backdropFilter = 'blur(20px)';
+      nav.style.background = 'rgba(5,8,20,0.75)';
+    }
+  });
+</script>
+
+</body>
+</html>
  
