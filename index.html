@@ -533,11 +533,13 @@
     from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .fade-in.visible { opacity: 1; transform: translateY(0); }
-  /* Fallback: if JS fails, show everything */
-  @media (prefers-reduced-motion: reduce) {
-    .fade-in { opacity: 1; transform: none; }
+  /* Fade-in: desktop only */
+  @media (min-width: 901px) {
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 900px) {
+    .fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }
   }
   .divider { display: block; width: 100%; max-width: 1120px; height: 1px; background: rgba(255,255,255,0.06); margin: 0 auto; }
 
@@ -936,7 +938,7 @@
       <li><a href="#work">Case Studies</a></li>
       <li><a href="#pricing">Pricing</a></li>
     </ul>
-    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Chennai, India</p>
+    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Tiruppur, India</p>
   </div>
 </footer>
 
