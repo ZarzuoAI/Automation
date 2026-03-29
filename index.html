@@ -23,11 +23,8 @@
     --font-head: 'Syne', sans-serif;
     --font-body: 'DM Sans', sans-serif;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--bg);
     color: var(--white);
@@ -36,8 +33,6 @@
     line-height: 1.6;
     overflow-x: hidden;
   }
-
-  /* ── NOISE OVERLAY ── */
   body::before {
     content: '';
     position: fixed;
@@ -46,8 +41,6 @@
     pointer-events: none;
     z-index: 0;
   }
-
-  /* ── HERO GLOW ORBS ── */
   .orb {
     position: absolute;
     border-radius: 50%;
@@ -66,25 +59,24 @@
     width: 400px; height: 400px;
     background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
     top: 100px; right: -100px;
-    animation: pulse 8s ease-in-out infinite alternate-reverse;
+    animation: pulseSimple 8s ease-in-out infinite alternate-reverse;
   }
   .orb-3 {
     width: 300px; height: 300px;
     background: radial-gradient(circle, rgba(123,94,167,0.2) 0%, transparent 70%);
     top: 200px; left: -80px;
-    animation: pulse 7s ease-in-out infinite alternate;
+    animation: pulseSimple 7s ease-in-out infinite alternate;
   }
   @keyframes pulse {
     from { opacity: 0.6; transform: scale(1) translateX(-50%); }
-    to { opacity: 1; transform: scale(1.1) translateX(-50%); }
+    to   { opacity: 1;   transform: scale(1.1) translateX(-50%); }
   }
-  .orb-2, .orb-3 { animation-name: pulseSimple; }
   @keyframes pulseSimple {
     from { opacity: 0.5; transform: scale(1); }
-    to { opacity: 1; transform: scale(1.15); }
+    to   { opacity: 1;   transform: scale(1.15); }
   }
 
-  /* ── NAV ── */
+  /* NAV */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -94,28 +86,25 @@
     justify-content: space-between;
     padding: 0 40px;
     height: 64px;
-    background: rgba(5,8,20,0.75);
+    background: rgba(5,8,20,0.85);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255,255,255,0.06);
-    transition: all 0.3s;
   }
   .nav-logo {
     display: flex;
     align-items: center;
-    gap: 9px;
-    font-family: var(--font-head);
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--white);
+    gap: 10px;
     text-decoration: none;
-    letter-spacing: -0.3px;
   }
-  .logo-icon {
-    width: 30px; height: 30px;
-    background: linear-gradient(135deg, var(--blue), var(--cyan));
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
+  .nav-logo-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #f0f4ff;
+    letter-spacing: -0.4px;
+  }
+  .nav-logo-text span {
+    color: #00d4ff;
   }
   .nav-links {
     display: flex;
@@ -128,26 +117,24 @@
     text-decoration: none;
     font-size: 14px;
     font-weight: 400;
-    letter-spacing: 0.01em;
     transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--white); }
   .btn-nav {
-    background: var(--blue);
+    background: var(--blue) !important;
     color: #fff !important;
     padding: 8px 18px;
     border-radius: 8px;
     font-size: 14px !important;
     font-weight: 500 !important;
-    transition: background 0.2s, box-shadow 0.2s !important;
   }
   .btn-nav:hover {
     background: var(--blue-light) !important;
-    box-shadow: 0 0 20px var(--blue-glow) !important;
-    color: #fff !important;
+    box-shadow: 0 0 20px var(--blue-glow);
   }
+  .menu-btn { display: none; }
 
-  /* ── HERO ── */
+  /* HERO */
   .hero {
     position: relative;
     min-height: 100vh;
@@ -173,9 +160,7 @@
     position: relative; z-index: 1;
     animation: fadeUp 0.6s ease both;
   }
-  .hero-badge .avatars {
-    display: flex;
-  }
+  .hero-badge .avatars { display: flex; }
   .hero-badge .avatars span {
     width: 22px; height: 22px;
     border-radius: 50%;
@@ -186,25 +171,22 @@
     background: linear-gradient(135deg, var(--blue), var(--accent));
   }
   .hero-badge .avatars span:first-child { margin-left: 0; }
-
   .hero h1 {
     font-family: var(--font-head);
     font-size: clamp(40px, 7vw, 80px);
     font-weight: 800;
     line-height: 1.07;
     letter-spacing: -2px;
-    color: var(--white);
     max-width: 780px;
     position: relative; z-index: 1;
     animation: fadeUp 0.7s 0.1s ease both;
   }
-  .hero h1 .grad {
+  .grad {
     background: linear-gradient(90deg, #fff 20%, var(--cyan) 60%, var(--blue-light) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
   .hero p {
     margin-top: 20px;
     font-size: 17px;
@@ -214,7 +196,6 @@
     position: relative; z-index: 1;
     animation: fadeUp 0.7s 0.2s ease both;
   }
-
   .hero-ctas {
     display: flex;
     gap: 12px;
@@ -248,7 +229,6 @@
     border-radius: 10px;
     font-size: 15px;
     font-weight: 500;
-    font-family: var(--font-body);
     border: 1px solid rgba(255,255,255,0.1);
     cursor: pointer;
     text-decoration: none;
@@ -256,15 +236,13 @@
   }
   .btn-secondary:hover {
     background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
     transform: translateY(-1px);
   }
-  /* ── TICKER ── */
+
+  /* TICKER */
   .ticker-section {
     padding: 48px 0;
     border-top: 1px solid rgba(255,255,255,0.06);
-    overflow: hidden;
-    position: relative;
   }
   .ticker-label {
     text-align: center;
@@ -272,48 +250,62 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     opacity: 0.7;
   }
+  .ticker-outer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 44px;
+  }
+  .ticker-outer::before,
+  .ticker-outer::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ticker-outer::before { left: 0;  background: linear-gradient(to right, #050814, transparent); }
+  .ticker-outer::after  { right: 0; background: linear-gradient(to left,  #050814, transparent); }
   .ticker-track {
     display: flex;
-    gap: 0;
-    animation: ticker 25s linear infinite;
+    align-items: center;
+    height: 44px;
     width: max-content;
+    animation: ticker 28s linear infinite;
   }
   .ticker-track:hover { animation-play-state: paused; }
-  .ticker-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 40px;
-    color: rgba(200,210,255,0.5);
-    font-family: var(--font-head);
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
-    transition: color 0.2s;
-  }
-  .ticker-item:hover { color: var(--white); }
-  .ticker-item .dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--blue);
-    flex-shrink: 0;
-  }
   @keyframes ticker {
     from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    to   { transform: translateX(-50%); }
   }
-  .ticker-fade-l, .ticker-fade-r {
-    position: absolute; top: 0; bottom: 0; width: 120px;
-    z-index: 2; pointer-events: none;
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 32px;
+    color: rgba(200,210,255,0.6);
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: default;
+    transition: color 0.2s;
   }
-  .ticker-fade-l { left: 0; background: linear-gradient(90deg, var(--bg) 0%, transparent 100%); }
-  .ticker-fade-r { right: 0; background: linear-gradient(270deg, var(--bg) 0%, transparent 100%); }
+  .ticker-item:hover { color: #f0f4ff; }
+  .ticker-dot {
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #3b63f7;
+    flex-shrink: 0;
+  }
 
-  /* ── SECTIONS ── */
+  /* SECTIONS */
   section {
     padding: 80px 24px;
     max-width: 1120px;
@@ -357,7 +349,7 @@
     line-height: 1.65;
   }
 
-  /* ── FEATURES GRID ── */
+  /* FEATURES */
   .features-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -381,14 +373,9 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
-  .feat-card:hover {
-    border-color: rgba(59,99,247,0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
+  .feat-card:hover { border-color: rgba(59,99,247,0.3); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
   .feat-card:hover::before { opacity: 1; }
   .feat-card.wide { grid-column: span 2; }
-
   .feat-icon {
     width: 44px; height: 44px;
     border-radius: 12px;
@@ -398,471 +385,138 @@
     font-size: 20px;
     margin-bottom: 20px;
   }
-  .feat-card h3 {
-    font-family: var(--font-head);
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.4px;
-    margin-bottom: 10px;
-    color: var(--white);
-  }
-  .feat-card p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.65;
-  }
-
-  /* Flow diagram inside wide card */
-  .flow-diagram {
-    margin-top: 28px;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex-wrap: wrap;
-  }
+  .feat-card h3 { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 10px; color: var(--white); }
+  .feat-card p  { font-size: 14px; color: var(--muted); line-height: 1.65; }
+  .flow-diagram { margin-top: 28px; display: flex; align-items: center; flex-wrap: wrap; gap: 0; }
   .flow-node {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; align-items: center; gap: 10px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 10px;
     padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--white);
-    white-space: nowrap;
+    font-size: 13px; font-weight: 500; color: var(--white); white-space: nowrap;
   }
-  .flow-node .node-icon {
-    width: 28px; height: 28px;
-    border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-  }
-  .flow-arrow {
-    color: var(--blue);
-    font-size: 20px;
-    padding: 0 8px;
-    flex-shrink: 0;
-  }
+  .node-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .flow-arrow { color: var(--blue); font-size: 20px; padding: 0 8px; flex-shrink: 0; }
 
-  /* ── SERVICES ── */
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 48px;
-  }
+  /* SERVICES */
+  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
   .svc-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 30px 28px;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 18px; padding: 30px 28px;
+    transition: all 0.3s; position: relative; overflow: hidden;
   }
   .svc-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--blue), var(--cyan));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s;
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
   }
-  .svc-card:hover {
-    border-color: rgba(59,99,247,0.25);
-    transform: translateY(-3px);
-  }
+  .svc-card:hover { border-color: rgba(59,99,247,0.25); transform: translateY(-3px); }
   .svc-card:hover::after { transform: scaleX(1); }
-  .svc-num {
-    font-family: var(--font-head);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--blue-light);
-    letter-spacing: 0.1em;
-    opacity: 0.7;
-    margin-bottom: 16px;
-  }
-  .svc-card h3 {
-    font-family: var(--font-head);
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    margin-bottom: 10px;
-    color: var(--white);
-  }
-  .svc-card p {
-    font-size: 13.5px;
-    color: var(--muted);
-    line-height: 1.65;
-  }
-  .svc-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 18px;
-  }
-  .tag {
-    background: rgba(59,99,247,0.1);
-    border: 1px solid rgba(59,99,247,0.2);
-    border-radius: 6px;
-    padding: 3px 10px;
-    font-size: 11px;
-    color: var(--blue-light);
-    font-weight: 500;
-  }
+  .svc-num { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--blue-light); letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 16px; }
+  .svc-card h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; color: var(--white); }
+  .svc-card p  { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .tag { background: rgba(59,99,247,0.1); border: 1px solid rgba(59,99,247,0.2); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--blue-light); font-weight: 500; }
 
-  /* ── CASE STUDIES ── */
-  .cases-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 48px;
-  }
-  .case-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 32px;
-    transition: all 0.3s;
-  }
-  .case-card:hover {
-    border-color: rgba(59,99,247,0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
-  .case-industry {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .case-tag {
-    background: rgba(0,212,255,0.1);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 6px;
-    padding: 3px 10px;
-    font-size: 11px;
-    color: var(--cyan);
-    font-weight: 500;
-  }
+  /* CASE STUDIES */
+  .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
+  .case-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; padding: 32px; transition: all 0.3s; }
+  .case-card:hover { border-color: rgba(59,99,247,0.3); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .case-industry { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .case-tag { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--cyan); font-weight: 500; }
   .case-icon { font-size: 28px; }
-  .case-card h3 {
-    font-family: var(--font-head);
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.4px;
-    margin-bottom: 10px;
-    color: var(--white);
-  }
-  .case-card p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.65;
-    margin-bottom: 20px;
-  }
-  .case-metrics {
-    display: flex;
-    gap: 24px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.07);
-  }
-  .metric { }
-  .metric .val {
-    font-family: var(--font-head);
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--cyan);
-    letter-spacing: -0.5px;
-  }
-  .metric .lbl {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  .case-card h3 { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 10px; color: var(--white); }
+  .case-card p  { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
+  .case-metrics { display: flex; gap: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07); }
+  .metric .val { font-family: var(--font-head); font-size: 24px; font-weight: 800; color: var(--cyan); letter-spacing: -0.5px; }
+  .metric .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-  /* ── PRICING ── */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 48px;
-  }
-  .price-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 32px 28px;
-    position: relative;
-    transition: all 0.3s;
-  }
-  .price-card.featured {
-    background: rgba(59,99,247,0.08);
-    border-color: rgba(59,99,247,0.4);
-    box-shadow: 0 0 60px rgba(59,99,247,0.12);
-  }
-  .price-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
-  }
-  .popular-badge {
-    position: absolute;
-    top: -12px; left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, var(--blue), var(--cyan));
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 14px;
-    border-radius: 100px;
-    white-space: nowrap;
-  }
-  .price-tier {
-    font-family: var(--font-head);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-  .price-amt {
-    font-family: var(--font-head);
-    font-size: 42px;
-    font-weight: 800;
-    letter-spacing: -1.5px;
-    color: var(--white);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .price-amt sup {
-    font-size: 22px;
-    vertical-align: super;
-    font-weight: 600;
-    letter-spacing: 0;
-  }
-  .price-amt .per {
-    font-size: 14px;
-    color: var(--muted);
-    font-weight: 400;
-    letter-spacing: 0;
-  }
-  .price-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.55;
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-  }
-  .price-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-  .price-features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 13.5px;
-    color: var(--muted);
-  }
-  .price-features li::before {
-    content: '✓';
-    color: var(--cyan);
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .btn-price {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: var(--font-body);
-    cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.05);
-    color: var(--white);
-    transition: all 0.2s;
-  }
-  .btn-price:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
-  }
-  .btn-price.primary {
-    background: var(--blue);
-    border-color: transparent;
-    box-shadow: 0 4px 20px rgba(59,99,247,0.35);
-  }
-  .btn-price.primary:hover {
-    background: var(--blue-light);
-    box-shadow: 0 8px 30px rgba(59,99,247,0.5);
-  }
-
-  /* ── TECH STACK ── */
-  .stack-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 12px;
-    margin-top: 48px;
-  }
+  /* TECH STACK */
+  .stack-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 12px; margin-top: 48px; }
   .stack-pill {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 16px 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--muted);
-    transition: all 0.2s;
-    cursor: default;
-    text-align: center;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 16px 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    transition: all 0.2s; cursor: default; text-align: center;
   }
-  .stack-pill:hover {
-    border-color: rgba(59,99,247,0.3);
-    color: var(--white);
-    transform: translateY(-2px);
-  }
+  .stack-pill:hover { border-color: rgba(59,99,247,0.3); color: var(--white); transform: translateY(-2px); }
   .stack-pill .emoji { font-size: 24px; line-height: 1; }
 
-  /* ── CTA SECTION ── */
-  .cta-section {
-    padding: 80px 24px;
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
+  .price-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px 28px; position: relative; transition: all 0.3s; }
+  .price-card.featured { background: rgba(59,99,247,0.08); border-color: rgba(59,99,247,0.4); box-shadow: 0 0 60px rgba(59,99,247,0.12); }
+  .price-card:hover { transform: translateY(-4px); box-shadow: 0 24px 64px rgba(0,0,0,0.4); }
+  .popular-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    color: #fff; font-size: 11px; font-weight: 600; padding: 4px 14px;
+    border-radius: 100px; white-space: nowrap;
   }
+  .price-tier { font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .price-amt { font-family: var(--font-head); font-size: 42px; font-weight: 800; letter-spacing: -1.5px; color: var(--white); line-height: 1; margin-bottom: 6px; }
+  .price-amt sup { font-size: 22px; vertical-align: super; font-weight: 600; }
+  .price-amt .per { font-size: 14px; color: var(--muted); font-weight: 400; }
+  .price-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--muted); }
+  .price-features li::before { content: '✓'; color: var(--cyan); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .btn-price { width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 500; font-family: var(--font-body); cursor: pointer; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--white); transition: all 0.2s; }
+  .btn-price:hover { background: rgba(255,255,255,0.1); }
+  .btn-price.primary { background: var(--blue); border-color: transparent; box-shadow: 0 4px 20px rgba(59,99,247,0.35); }
+  .btn-price.primary:hover { background: var(--blue-light); box-shadow: 0 8px 30px rgba(59,99,247,0.5); }
+
+  /* CTA */
+  .cta-section { padding: 80px 24px; }
   .cta-box {
-    max-width: 1120px;
-    margin: 0 auto;
+    max-width: 1120px; margin: 0 auto;
     background: linear-gradient(135deg, rgba(59,99,247,0.15) 0%, rgba(0,212,255,0.05) 100%);
-    border: 1px solid rgba(59,99,247,0.25);
-    border-radius: 24px;
-    padding: 72px 48px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    border: 1px solid rgba(59,99,247,0.25); border-radius: 24px;
+    padding: 72px 48px; text-align: center; position: relative; overflow: hidden;
   }
   .cta-box::before {
-    content: '';
-    position: absolute;
-    top: -100px; left: 50%;
-    transform: translateX(-50%);
+    content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
     width: 400px; height: 300px;
     background: radial-gradient(circle, rgba(59,99,247,0.3) 0%, transparent 70%);
     pointer-events: none;
   }
-  .cta-box h2 {
-    font-family: var(--font-head);
-    font-size: clamp(28px, 4vw, 46px);
-    font-weight: 800;
-    letter-spacing: -1.2px;
-    margin-bottom: 14px;
-    position: relative;
-  }
-  .cta-box p {
-    font-size: 16px;
-    color: var(--muted);
-    margin-bottom: 36px;
-    position: relative;
-  }
-  .cta-row {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    position: relative;
-  }
+  .cta-box h2 { font-family: var(--font-head); font-size: clamp(28px,4vw,46px); font-weight: 800; letter-spacing: -1.2px; margin-bottom: 14px; position: relative; }
+  .cta-box p  { font-size: 16px; color: var(--muted); margin-bottom: 36px; position: relative; }
+  .cta-row { display: flex; gap: 12px; justify-content: center; position: relative; }
 
-  /* ── FOOTER ── */
+  /* FOOTER */
   footer {
     border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 40px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1200px; margin: 0 auto;
   }
-  .footer-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--font-head);
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--white);
-  }
-  .footer-right {
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .footer-links {
-    display: flex;
-    gap: 24px;
-    list-style: none;
-    margin-bottom: 8px;
-  }
-  .footer-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 13px;
-    transition: color 0.2s;
-  }
+  .footer-left { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--white); }
+  .footer-right { font-size: 13px; color: var(--muted); }
+  .footer-links { display: flex; gap: 24px; list-style: none; margin-bottom: 8px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
   .footer-links a:hover { color: var(--white); }
 
-  /* ── ANIMATIONS ── */
+  /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
   }
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Divider */
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: rgba(255,255,255,0.06);
-    max-width: 1120px;
-    margin: 0 auto;
-  }
-
-  /* Mobile nav */
-  .menu-btn { display: none; }
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .divider { width: 100%; height: 1px; background: rgba(255,255,255,0.06); max-width: 1120px; margin: 0 auto; }
 
   @media (max-width: 900px) {
     nav { padding: 0 20px; }
     .nav-links { display: none; }
-    .menu-btn {
-      display: block;
-      background: none;
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--white);
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-    }
+    .menu-btn { display: block; background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--white); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 18px; }
     .features-grid, .cases-grid { grid-template-columns: 1fr; }
     .feat-card.wide { grid-column: span 1; }
     .services-grid { grid-template-columns: 1fr; }
     .pricing-grid { grid-template-columns: 1fr; }
-    .stack-grid { grid-template-columns: repeat(3, 1fr); }
+    .stack-grid { grid-template-columns: repeat(3,1fr); }
     footer { flex-direction: column; gap: 20px; text-align: center; }
     .footer-links { justify-content: center; }
     .flow-diagram { flex-wrap: wrap; }
@@ -874,8 +528,16 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="logo-icon">⚡</div>
-    FlowCraft
+    <svg width="34" height="34" viewBox="0 0 72 72" style="flex-shrink:0;display:block;">
+      <rect x="0" y="0" width="72" height="72" rx="14" fill="#0a0f2e"/>
+      <rect x="0" y="0" width="72" height="72" rx="14" fill="none" stroke="#3b63f7" stroke-width="2"/>
+      <path d="M18 24 L54 24 L18 48 L54 48" stroke="#00d4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="18" cy="24" r="4" fill="#5b80ff"/>
+      <circle cx="54" cy="24" r="4" fill="#5b80ff"/>
+      <circle cx="18" cy="48" r="4" fill="#5b80ff"/>
+      <circle cx="54" cy="48" r="4" fill="#5b80ff"/>
+    </svg>
+    <span class="nav-logo-text">Zarzuo<span>AI</span></span>
   </a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
@@ -884,7 +546,7 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#contact" class="btn-nav">Book a Call</a></li>
   </ul>
-  <button class="menu-btn" onclick="alert('Menu')">☰</button>
+  <button class="menu-btn">☰</button>
 </nav>
 
 <!-- HERO -->
@@ -892,23 +554,14 @@
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
-
   <div class="hero-badge">
     <div class="avatars">
       <span>🇮🇳</span><span>🛒</span><span>🚀</span>
     </div>
-    &nbsp; Serving businesses across e-commerce, SaaS & ops
+    &nbsp; Serving businesses across e-commerce, SaaS &amp; ops
   </div>
-
-  <h1>
-    The smartest way to<br/>
-    <span class="grad">automate your business</span>
-  </h1>
-
-  <p>
-    AI-powered workflows built with n8n — from abandoned cart recovery to CRM pipelines. I ship automations that actually run in production.
-  </p>
-
+  <h1>The smartest way to<br/><span class="grad">automate your business</span></h1>
+  <p>AI-powered workflows built with n8n — from abandoned cart recovery to CRM pipelines. I ship automations that actually run in production.</p>
   <div class="hero-ctas">
     <a href="#contact" class="btn-primary">Get Started Now</a>
     <a href="#work" class="btn-secondary">See My Work →</a>
@@ -917,35 +570,30 @@
 
 <!-- TICKER -->
 <div class="ticker-section">
-  <p class="ticker-label">Tools & integrations I work with</p>
-  <div class="ticker-fade-l"></div>
-  <div class="ticker-fade-r"></div>
-  <div class="ticker-track" id="ticker">
-    <div class="ticker-item"><span class="dot"></span>n8n</div>
-    <div class="ticker-item"><span class="dot"></span>OpenAI</div>
-    <div class="ticker-item"><span class="dot"></span>Shopify</div>
-    <div class="ticker-item"><span class="dot"></span>WhatsApp API</div>
-    <div class="ticker-item"><span class="dot"></span>Airtable</div>
-    <div class="ticker-item"><span class="dot"></span>PostgreSQL</div>
-    <div class="ticker-item"><span class="dot"></span>Supabase</div>
-    <div class="ticker-item"><span class="dot"></span>Telegram Bot</div>
-    <div class="ticker-item"><span class="dot"></span>Google Sheets</div>
-    <div class="ticker-item"><span class="dot"></span>HubSpot</div>
-    <div class="ticker-item"><span class="dot"></span>Stripe</div>
-    <div class="ticker-item"><span class="dot"></span>Power BI</div>
-    <!-- duplicate for infinite loop -->
-    <div class="ticker-item"><span class="dot"></span>n8n</div>
-    <div class="ticker-item"><span class="dot"></span>OpenAI</div>
-    <div class="ticker-item"><span class="dot"></span>Shopify</div>
-    <div class="ticker-item"><span class="dot"></span>WhatsApp API</div>
-    <div class="ticker-item"><span class="dot"></span>Airtable</div>
-    <div class="ticker-item"><span class="dot"></span>PostgreSQL</div>
-    <div class="ticker-item"><span class="dot"></span>Supabase</div>
-    <div class="ticker-item"><span class="dot"></span>Telegram Bot</div>
-    <div class="ticker-item"><span class="dot"></span>Google Sheets</div>
-    <div class="ticker-item"><span class="dot"></span>HubSpot</div>
-    <div class="ticker-item"><span class="dot"></span>Stripe</div>
-    <div class="ticker-item"><span class="dot"></span>Power BI</div>
+  <p class="ticker-label">Tools &amp; integrations I work with</p>
+  <div class="ticker-outer">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-dot"></span>n8n</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>OpenAI</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Shopify</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>WhatsApp API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Airtable</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>PostgreSQL</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Telegram Bot</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Google Sheets</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Stripe</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Power BI</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>n8n</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>OpenAI</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Shopify</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>WhatsApp API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Airtable</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>PostgreSQL</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Telegram Bot</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Google Sheets</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Stripe</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Power BI</span>
+    </div>
   </div>
 </div>
 
@@ -956,7 +604,6 @@
     <h2 class="section-title">Automation that actually<br/>makes you money</h2>
     <p class="section-sub">Not just connected apps — complete systems that recover revenue, qualify leads, and cut manual work to zero.</p>
   </div>
-
   <div class="features-grid">
     <div class="feat-card fade-in">
       <div class="feat-icon">🛒</div>
@@ -986,13 +633,13 @@
     </div>
     <div class="feat-card fade-in">
       <div class="feat-icon">📊</div>
-      <h3>CRM & Lead Automation</h3>
+      <h3>CRM &amp; Lead Automation</h3>
       <p>Custom CRM pipelines with auto-scoring, Slack/email alerts, follow-up sequences, and Power BI dashboards — all connected through n8n.</p>
     </div>
     <div class="feat-card fade-in">
       <div class="feat-icon">🔗</div>
-      <h3>API & Webhook Integration</h3>
-      <p>I wire up any API — Stripe webhooks, Meta Cloud API, Airtable, Supabase — into clean workflows that run 24/7 without babysitting.</p>
+      <h3>API &amp; Webhook Integration</h3>
+      <p>I wire up any API — Stripe webhooks, Meta Cloud API, Airtable — into clean workflows that run 24/7 without babysitting.</p>
     </div>
   </div>
 </section>
@@ -1006,67 +653,42 @@
     <h2 class="section-title">What you can hire me for</h2>
     <p class="section-sub">Lean, fast, and production-ready. No bloated agencies — just focused execution.</p>
   </div>
-
   <div class="services-grid">
     <div class="svc-card fade-in">
       <div class="svc-num">01</div>
       <h3>Workflow Automation</h3>
       <p>Full n8n workflow design, deployment, and documentation. I map your process, build the flow, and hand you a system that runs itself.</p>
-      <div class="svc-tags">
-        <span class="tag">n8n</span>
-        <span class="tag">Zapier Migration</span>
-        <span class="tag">Webhooks</span>
-      </div>
+      <div class="svc-tags"><span class="tag">n8n</span><span class="tag">Zapier Migration</span><span class="tag">Webhooks</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">02</div>
       <h3>AI Agent Development</h3>
       <p>Custom GPT-4 agents with RAG pipelines, memory, and tool calls — trained on your data and deployed in your channels.</p>
-      <div class="svc-tags">
-        <span class="tag">OpenAI</span>
-        <span class="tag">RAG</span>
-        <span class="tag">MCP Servers</span>
-      </div>
+      <div class="svc-tags"><span class="tag">OpenAI</span><span class="tag">RAG</span><span class="tag">MCP Servers</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">03</div>
       <h3>E-Commerce Automation</h3>
       <p>Shopify + WhatsApp + AI stack for cart recovery, order confirmations, upsells, and post-purchase flows.</p>
-      <div class="svc-tags">
-        <span class="tag">Shopify</span>
-        <span class="tag">Meta API</span>
-        <span class="tag">WhatsApp</span>
-      </div>
+      <div class="svc-tags"><span class="tag">Shopify</span><span class="tag">Meta API</span><span class="tag">WhatsApp</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">04</div>
       <h3>CRM Buildout</h3>
       <p>Custom CRM systems with lead scoring, automated follow-ups, and real-time dashboards — built lean, no overpriced SaaS required.</p>
-      <div class="svc-tags">
-        <span class="tag">Airtable</span>
-        <span class="tag">Power BI</span>
-        <span class="tag">SQL</span>
-      </div>
+      <div class="svc-tags"><span class="tag">Airtable</span><span class="tag">Power BI</span><span class="tag">SQL</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">05</div>
-      <h3>Data Pipeline & BI</h3>
+      <h3>Data Pipeline &amp; BI</h3>
       <p>ETL pipelines, SQL databases, and Power BI dashboards that turn raw data into decisions — no data engineer needed.</p>
-      <div class="svc-tags">
-        <span class="tag">PostgreSQL</span>
-        <span class="tag">Supabase</span>
-        <span class="tag">Power BI</span>
-      </div>
+      <div class="svc-tags"><span class="tag">PostgreSQL</span><span class="tag">Power BI</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">06</div>
       <h3>Automation Audit</h3>
       <p>One-time audit of your current stack and manual processes. I map everything and deliver a prioritized automation roadmap.</p>
-      <div class="svc-tags">
-        <span class="tag">Strategy</span>
-        <span class="tag">Roadmap</span>
-        <span class="tag">1× Project</span>
-      </div>
+      <div class="svc-tags"><span class="tag">Strategy</span><span class="tag">Roadmap</span><span class="tag">1× Project</span></div>
     </div>
   </div>
 </section>
@@ -1080,13 +702,9 @@
     <h2 class="section-title">Real systems, real results</h2>
     <p class="section-sub">Projects I've built that shipped to production and moved the needle.</p>
   </div>
-
   <div class="cases-grid">
     <div class="case-card fade-in">
-      <div class="case-industry">
-        <span class="case-tag">E-Commerce</span>
-        <span class="case-icon">🛒</span>
-      </div>
+      <div class="case-industry"><span class="case-tag">E-Commerce</span><span class="case-icon">🛒</span></div>
       <h3>Shopify Abandoned Cart Recovery via WhatsApp AI</h3>
       <p>Built an n8n workflow that detects cart abandonment, generates a personalized WhatsApp message via GPT-4, and handles shopper objections conversationally — replacing static Klaviyo email flows.</p>
       <div class="case-metrics">
@@ -1096,11 +714,8 @@
       </div>
     </div>
     <div class="case-card fade-in">
-      <div class="case-industry">
-        <span class="case-tag">Sales Ops</span>
-        <span class="case-icon">📊</span>
-      </div>
-      <h3>AI Lead Qualification & CRM Pipeline</h3>
+      <div class="case-industry"><span class="case-tag">Sales Ops</span><span class="case-icon">📊</span></div>
+      <h3>AI Lead Qualification &amp; CRM Pipeline</h3>
       <p>Automated lead intake from web forms → GPT scoring → CRM entry → Slack alerts → follow-up email sequence. Built on n8n + Airtable + OpenAI with a Power BI reporting layer.</p>
       <div class="case-metrics">
         <div class="metric"><div class="val">80%</div><div class="lbl">Time saved on ops</div></div>
@@ -1109,11 +724,8 @@
       </div>
     </div>
     <div class="case-card fade-in">
-      <div class="case-industry">
-        <span class="case-tag">Support</span>
-        <span class="case-icon">💬</span>
-      </div>
-      <h3>RAG Chatbot for Product Q&A</h3>
+      <div class="case-industry"><span class="case-tag">Support</span><span class="case-icon">💬</span></div>
+      <h3>RAG Chatbot for Product Q&amp;A</h3>
       <p>Embedded a RAG pipeline over a Shopify product catalogue and deployed it as a WhatsApp + website chatbot — answers product questions, handles returns, escalates when needed.</p>
       <div class="case-metrics">
         <div class="metric"><div class="val">70%</div><div class="lbl">Tickets deflected</div></div>
@@ -1121,11 +733,8 @@
       </div>
     </div>
     <div class="case-card fade-in">
-      <div class="case-industry">
-        <span class="case-tag">Data</span>
-        <span class="case-icon">⚙️</span>
-      </div>
-      <h3>ETL & Business Intelligence Dashboard</h3>
+      <div class="case-industry"><span class="case-tag">Data</span><span class="case-icon">⚙️</span></div>
+      <h3>ETL &amp; Business Intelligence Dashboard</h3>
       <p>Built a Python + PostgreSQL + Power BI pipeline pulling from 4 data sources into a single executive dashboard — updated daily, no manual exports.</p>
       <div class="case-metrics">
         <div class="metric"><div class="val">4</div><div class="lbl">Sources unified</div></div>
@@ -1144,7 +753,6 @@
     <h2 class="section-title">My automation toolkit</h2>
     <p class="section-sub">Every tool chosen for production reliability — not hype.</p>
   </div>
-
   <div class="stack-grid">
     <div class="stack-pill fade-in"><span class="emoji">⚡</span>n8n</div>
     <div class="stack-pill fade-in"><span class="emoji">🧠</span>OpenAI</div>
@@ -1154,7 +762,6 @@
     <div class="stack-pill fade-in"><span class="emoji">💬</span>WhatsApp API</div>
     <div class="stack-pill fade-in"><span class="emoji">📊</span>Power BI</div>
     <div class="stack-pill fade-in"><span class="emoji">🗂️</span>Airtable</div>
-    <div class="stack-pill fade-in"><span class="emoji">🔥</span>Supabase</div>
     <div class="stack-pill fade-in"><span class="emoji">🤖</span>Telegram Bot</div>
     <div class="stack-pill fade-in"><span class="emoji">📋</span>Google Sheets</div>
     <div class="stack-pill fade-in"><span class="emoji">⚙️</span>MCP Servers</div>
@@ -1170,26 +777,24 @@
     <h2 class="section-title">Simple, transparent pricing</h2>
     <p class="section-sub">Project-based. No retainer traps. Pay for what you need, own what gets built.</p>
   </div>
-
   <div class="pricing-grid">
     <div class="price-card fade-in">
       <div class="price-tier">Starter</div>
-      <div class="price-amt"><sup>₹</sup>4999<span class="per"> / project</span></div>
+      <div class="price-amt"><sup>₹</sup>4,999<span class="per"> / project</span></div>
       <p class="price-desc">One focused automation. Ideal for small businesses wanting to test the value before going all-in.</p>
       <ul class="price-features">
         <li>1 n8n workflow (up to 5 nodes)</li>
-        <li>1 integration (Shopify, HubSpot, etc.)</li>
+        <li>1 integration (Shopify, Airtable, etc.)</li>
         <li>2 rounds of revisions</li>
         <li>Loom walkthrough on delivery</li>
         <li>7-day support window</li>
       </ul>
       <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
     </div>
-
     <div class="price-card featured fade-in">
       <div class="popular-badge">Most Popular</div>
       <div class="price-tier">Growth</div>
-      <div class="price-amt"><sup>₹</sup>6999<span class="per"> / project</span></div>
+      <div class="price-amt"><sup>₹</sup>6,999<span class="per"> / project</span></div>
       <p class="price-desc">Full automation system with AI. Best for e-commerce brands and ops-heavy businesses.</p>
       <ul class="price-features">
         <li>Full n8n workflow (unlimited nodes)</li>
@@ -1201,10 +806,9 @@
       </ul>
       <button class="btn-price primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Call</button>
     </div>
-
     <div class="price-card fade-in">
-      <div class="price-tier">Scale</div>
-      <div class="price-amt"><sup>₹</sup>15000<span class="per">+ / mo</span></div>
+      <div class="price-tier">Advanced</div>
+      <div class="price-amt"><sup>₹</sup>14,999<span class="per"> / project</span></div>
       <p class="price-desc">Ongoing automation partner. I become your dedicated AI ops person — building, maintaining, and expanding your stack.</p>
       <ul class="price-features">
         <li>Unlimited workflow builds</li>
@@ -1222,7 +826,7 @@
 <!-- CTA -->
 <div class="cta-section" id="contact">
   <div class="cta-box">
-    <div class="section-label" style="margin: 0 auto 20px; display:table;">Let's build something</div>
+    <div class="section-label" style="margin:0 auto 20px;display:table;">Let's build something</div>
     <h2>Ready to automate?<br/><span class="grad">Book a free 30-min call.</span></h2>
     <p>Tell me your process — I'll tell you exactly how to automate it. No commitment, no pitch deck.</p>
     <div class="cta-row">
@@ -1235,7 +839,15 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-left">
-    <div class="logo-icon">⚡</div>
+    <svg width="28" height="28" viewBox="0 0 72 72" style="flex-shrink:0;display:block;">
+      <rect x="0" y="0" width="72" height="72" rx="14" fill="#0a0f2e"/>
+      <rect x="0" y="0" width="72" height="72" rx="14" fill="none" stroke="#3b63f7" stroke-width="2"/>
+      <path d="M18 24 L54 24 L18 48 L54 48" stroke="#00d4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="18" cy="24" r="4" fill="#5b80ff"/>
+      <circle cx="54" cy="24" r="4" fill="#5b80ff"/>
+      <circle cx="18" cy="48" r="4" fill="#5b80ff"/>
+      <circle cx="54" cy="48" r="4" fill="#5b80ff"/>
+    </svg>
     ZarzuoAI — Mohamed Anas
   </div>
   <div class="footer-right">
@@ -1245,38 +857,28 @@
       <li><a href="#work">Case Studies</a></li>
       <li><a href="#pricing">Pricing</a></li>
     </ul>
-    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Chennai, India</p>
+    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Tiruppur, India</p>
   </div>
 </footer>
 
 <script>
-  // Intersection Observer for fade-in
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-        }, 80);
+        setTimeout(() => entry.target.classList.add('visible'), 80);
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  // Stagger children within grids
   document.querySelectorAll('.features-grid .fade-in, .services-grid .fade-in, .cases-grid .fade-in, .pricing-grid .fade-in, .stack-grid .fade-in').forEach((el, i) => {
     el.style.transitionDelay = (i % 6) * 0.08 + 's';
   });
 
-  // Nav scroll effect
   window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    if (window.scrollY > 40) {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.1)';
-    } else {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
-    }
+    document.querySelector('nav').style.borderBottomColor =
+      window.scrollY > 40 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)';
   });
 </script>
 </body>
