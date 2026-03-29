@@ -508,43 +508,6 @@
   .fade-in.visible { opacity: 1; transform: translateY(0); }
   .divider { width: 100%; height: 1px; background: rgba(255,255,255,0.06); max-width: 1120px; margin: 0 auto; }
 
-  /* MOBILE MENU */
-  .mobile-menu {
-    display: none;
-    position: fixed;
-    top: 64px; left: 0; right: 0;
-    background: rgba(5,8,20,0.97);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    z-index: 99;
-    padding: 20px 24px 28px;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    transition: color 0.2s;
-  }
-  .mobile-menu a:hover { color: var(--white); }
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu .btn-mobile-cta {
-    margin-top: 12px;
-    background: var(--blue);
-    color: #fff !important;
-    text-align: center;
-    padding: 13px !important;
-    border-radius: 10px;
-    font-weight: 600 !important;
-    border-bottom: none !important;
-  }
-  .mobile-menu .btn-mobile-cta:hover { background: var(--blue-light) !important; }
-
   @media (max-width: 900px) {
     nav { padding: 0 20px; }
     .nav-links { display: none; }
@@ -583,17 +546,8 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#contact" class="btn-nav">Book a Call</a></li>
   </ul>
-  <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
+  <button class="menu-btn">☰</button>
 </nav>
-
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#features" onclick="closeMenu()">Features</a>
-  <a href="#services" onclick="closeMenu()">Services</a>
-  <a href="#work"     onclick="closeMenu()">Case Studies</a>
-  <a href="#pricing"  onclick="closeMenu()">Pricing</a>
-  <a href="#contact"  onclick="closeMenu()" class="btn-mobile-cta">📅 Book a Call</a>
-</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -607,7 +561,7 @@
     &nbsp; Serving businesses across e-commerce, SaaS &amp; ops
   </div>
   <h1>The smartest way to<br/><span class="grad">automate your business</span></h1>
-  <p>AI-powered workflows built with n8n — from abandoned cart recovery to CRM pipelines. I ship automations that actually run in production.</p>
+  <p>AI-powered workflows built with System— from abandoned cart recovery to CRM pipelines. I ship automations that actually run in production.</p>
   <div class="hero-ctas">
     <a href="#contact" class="btn-primary">Get Started Now</a>
     <a href="#work" class="btn-secondary">See My Work →</a>
@@ -827,13 +781,13 @@
     <div class="price-card fade-in">
       <div class="price-tier">Starter</div>
       <div class="price-amt"><sup>₹</sup>4,999<span class="per"> / project</span></div>
-      <p class="price-desc">One focused automation. Ideal for small businesses wanting to test the value before going all-in.</p>
+      <p class="price-desc">focused automation. Ideal for small businesses wanting to test the value before going all-in.</p>
       <ul class="price-features">
-        <li>1 n8n workflow (up to 5 nodes)</li>
-        <li>1 integration (Shopify, Airtable, etc.)</li>
-        <li>2 rounds of revisions</li>
-        <li>Loom walkthrough on delivery</li>
-        <li>7-day support window</li>
+        <li>1 Abandoned cart recovery (Email or WhatsApp)</li>
+        <li>1 Follow-up message</li>
+        <li>Shopify → Google Sheets tracking</li>
+        <li>Basic workflow setup</li>
+        <li>15-days support</li>
       </ul>
       <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
     </div>
@@ -843,12 +797,14 @@
       <div class="price-amt"><sup>₹</sup>6,999<span class="per"> / project</span></div>
       <p class="price-desc">Full automation system with AI. Best for e-commerce brands and ops-heavy businesses.</p>
       <ul class="price-features">
-        <li>Full n8n workflow (unlimited nodes)</li>
+        <li>AI Abandoned cart recovery (Email + WhatsApp)</li>
         <li>AI agent / GPT integration</li>
-        <li>Up to 5 app integrations</li>
-        <li>WhatsApp or Telegram deployment</li>
+        <li>Customer tracking system (CRM)</li>
+        <li>Order → automation (notifications + logging)</li>
+        <li>Basic customer segmentation</li>
+        <li>Up to 3 workflow automations</li>
         <li>Power BI dashboard (optional)</li>
-        <li>30-day support + 1 free tweak</li>
+        <li>30-days support + 1 free tweak</li>
       </ul>
       <button class="btn-price primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Call</button>
     </div>
@@ -857,12 +813,12 @@
       <div class="price-amt"><sup>₹</sup>14,999<span class="per"> / project</span></div>
       <p class="price-desc">Ongoing automation partner. I become your dedicated AI ops person — building, maintaining, and expanding your stack.</p>
       <ul class="price-features">
-        <li>Unlimited workflow builds</li>
-        <li>Monthly strategy calls</li>
-        <li>Priority turnaround (&lt;48h)</li>
-        <li>Full stack ownership</li>
-        <li>Dedicated Slack channel</li>
-        <li>Monthly reporting dashboard</li>
+        <li>Multi-step automation funnels:</li>
+        <li>Upsell & retention automation</li>
+        <li>Performance tracking dashboard</li>
+        <li>Repeat customer follow-ups</li>
+        <li>Up to 6 workflow automations</li>
+        <li>Priority support (48h)</li>x
       </ul>
       <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Let's Talk</button>
     </div>
@@ -903,7 +859,7 @@
       <li><a href="#work">Case Studies</a></li>
       <li><a href="#pricing">Pricing</a></li>
     </ul>
-    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Chennai, India</p>
+    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Tiruppur, India</p>
   </div>
 </footer>
 
@@ -925,25 +881,6 @@
   window.addEventListener('scroll', () => {
     document.querySelector('nav').style.borderBottomColor =
       window.scrollY > 40 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)';
-  });
-
-  function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const btn  = document.getElementById('menuBtn');
-    const open = menu.classList.toggle('open');
-    btn.textContent = open ? '✕' : '☰';
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-
-  function closeMenu() {
-    document.getElementById('mobileMenu').classList.remove('open');
-    document.getElementById('menuBtn').textContent = '☰';
-    document.body.style.overflow = '';
-  }
-
-  // Close menu on resize to desktop
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 900) closeMenu();
   });
 </script>
 </body>
