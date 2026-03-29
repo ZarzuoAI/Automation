@@ -310,6 +310,7 @@
     padding: 80px 24px;
     max-width: 1120px;
     margin: 0 auto;
+    width: 100%;
   }
   .section-label {
     display: inline-flex;
@@ -428,9 +429,37 @@
   .case-icon { font-size: 28px; }
   .case-card h3 { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 10px; color: var(--white); }
   .case-card p  { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
-  .case-metrics { display: flex; gap: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07); }
-  .metric .val { font-family: var(--font-head); font-size: 24px; font-weight: 800; color: var(--cyan); letter-spacing: -0.5px; }
-  .metric .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .case-metrics {
+    display: flex;
+    gap: 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    flex-wrap: wrap;
+  }
+  .metric {
+    flex: 1;
+    min-width: 80px;
+    padding: 12px 16px;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    text-align: center;
+  }
+  .metric:first-child { padding-left: 0; text-align: left; }
+  .metric:last-child  { border-right: none; }
+  .metric .val {
+    font-family: var(--font-body);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.3px;
+    display: block;
+  }
+  .metric .lbl {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    display: block;
+    line-height: 1.4;
+  }
 
   /* TECH STACK */
   .stack-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 12px; margin-top: 48px; }
@@ -506,7 +535,48 @@
   }
   .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
-  .divider { width: 100%; height: 1px; background: rgba(255,255,255,0.06); max-width: 1120px; margin: 0 auto; }
+  /* Fallback: if JS fails, show everything */
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in { opacity: 1; transform: none; }
+  }
+  .divider { display: block; width: 100%; max-width: 1120px; height: 1px; background: rgba(255,255,255,0.06); margin: 0 auto; }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    background: rgba(5,8,20,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    z-index: 99;
+    padding: 20px 24px 28px;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--white); }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu .btn-mobile-cta {
+    margin-top: 12px;
+    background: var(--blue);
+    color: #fff !important;
+    text-align: center;
+    padding: 13px !important;
+    border-radius: 10px;
+    font-weight: 600 !important;
+    border-bottom: none !important;
+  }
+  .mobile-menu .btn-mobile-cta:hover { background: var(--blue-light) !important; }
 
   @media (max-width: 900px) {
     nav { padding: 0 20px; }
@@ -546,8 +616,17 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#contact" class="btn-nav">Book a Call</a></li>
   </ul>
-  <button class="menu-btn">☰</button>
+  <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features" onclick="closeMenu()">Features</a>
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#work"     onclick="closeMenu()">Case Studies</a>
+  <a href="#pricing"  onclick="closeMenu()">Pricing</a>
+  <a href="#contact"  onclick="closeMenu()" class="btn-mobile-cta">📅 Book a Call</a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -561,7 +640,7 @@
     &nbsp; Serving businesses across e-commerce, SaaS &amp; ops
   </div>
   <h1>The smartest way to<br/><span class="grad">automate your business</span></h1>
-  <p>AI-powered workflows built with System— from abandoned cart recovery to CRM pipelines. I ship automations that actually run in production.</p>
+  <p>AI-powered workflows built with n8n — from abandoned cart recovery to CRM pipelines. I ship automations that actually run in production.</p>
   <div class="hero-ctas">
     <a href="#contact" class="btn-primary">Get Started Now</a>
     <a href="#work" class="btn-secondary">See My Work →</a>
@@ -708,9 +787,9 @@
       <h3>Shopify Abandoned Cart Recovery via WhatsApp AI</h3>
       <p>Built an n8n workflow that detects cart abandonment, generates a personalized WhatsApp message via GPT-4, and handles shopper objections conversationally — replacing static Klaviyo email flows.</p>
       <div class="case-metrics">
-        <div class="metric"><div class="val">3×</div><div class="lbl">Recovery vs email</div></div>
-        <div class="metric"><div class="val">~0</div><div class="lbl">Manual effort</div></div>
-        <div class="metric"><div class="val">24/7</div><div class="lbl">Always running</div></div>
+        <div class="metric"><span class="val">3× more</span><span class="lbl">Recovery vs email</span></div>
+        <div class="metric"><span class="val">Zero</span><span class="lbl">Manual effort</span></div>
+        <div class="metric"><span class="val">24/7</span><span class="lbl">Always running</span></div>
       </div>
     </div>
     <div class="case-card fade-in">
@@ -718,9 +797,9 @@
       <h3>AI Lead Qualification &amp; CRM Pipeline</h3>
       <p>Automated lead intake from web forms → GPT scoring → CRM entry → Slack alerts → follow-up email sequence. Built on n8n + Airtable + OpenAI with a Power BI reporting layer.</p>
       <div class="case-metrics">
-        <div class="metric"><div class="val">80%</div><div class="lbl">Time saved on ops</div></div>
-        <div class="metric"><div class="val">100%</div><div class="lbl">Auto-logged leads</div></div>
-        <div class="metric"><div class="val">2 days</div><div class="lbl">Build turnaround</div></div>
+        <div class="metric"><span class="val">80%</span><span class="lbl">Time saved on ops</span></div>
+        <div class="metric"><span class="val">100%</span><span class="lbl">Leads auto-logged</span></div>
+        <div class="metric"><span class="val">2 days</span><span class="lbl">Build turnaround</span></div>
       </div>
     </div>
     <div class="case-card fade-in">
@@ -728,8 +807,8 @@
       <h3>RAG Chatbot for Product Q&amp;A</h3>
       <p>Embedded a RAG pipeline over a Shopify product catalogue and deployed it as a WhatsApp + website chatbot — answers product questions, handles returns, escalates when needed.</p>
       <div class="case-metrics">
-        <div class="metric"><div class="val">70%</div><div class="lbl">Tickets deflected</div></div>
-        <div class="metric"><div class="val">&lt;2s</div><div class="lbl">Response time</div></div>
+        <div class="metric"><span class="val">70%</span><span class="lbl">Tickets deflected</span></div>
+        <div class="metric"><span class="val">&lt; 2 sec</span><span class="lbl">Response time</span></div>
       </div>
     </div>
     <div class="case-card fade-in">
@@ -737,8 +816,8 @@
       <h3>ETL &amp; Business Intelligence Dashboard</h3>
       <p>Built a Python + PostgreSQL + Power BI pipeline pulling from 4 data sources into a single executive dashboard — updated daily, no manual exports.</p>
       <div class="case-metrics">
-        <div class="metric"><div class="val">4</div><div class="lbl">Sources unified</div></div>
-        <div class="metric"><div class="val">Daily</div><div class="lbl">Auto-refresh</div></div>
+        <div class="metric"><span class="val">4 sources</span><span class="lbl">Data unified</span></div>
+        <div class="metric"><span class="val">Daily</span><span class="lbl">Auto-refresh</span></div>
       </div>
     </div>
   </div>
@@ -781,13 +860,13 @@
     <div class="price-card fade-in">
       <div class="price-tier">Starter</div>
       <div class="price-amt"><sup>₹</sup>4,999<span class="per"> / project</span></div>
-      <p class="price-desc">focused automation. Ideal for small businesses wanting to test the value before going all-in.</p>
+      <p class="price-desc">One focused automation. Ideal for small businesses wanting to test the value before going all-in.</p>
       <ul class="price-features">
-        <li>1 Abandoned cart recovery (Email or WhatsApp)</li>
-        <li>1 Follow-up message</li>
-        <li>Shopify → Google Sheets tracking</li>
-        <li>Basic workflow setup</li>
-        <li>15-days support</li>
+        <li>1 n8n workflow (up to 5 nodes)</li>
+        <li>1 integration (Shopify, Airtable, etc.)</li>
+        <li>2 rounds of revisions</li>
+        <li>Loom walkthrough on delivery</li>
+        <li>7-day support window</li>
       </ul>
       <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
     </div>
@@ -797,14 +876,12 @@
       <div class="price-amt"><sup>₹</sup>6,999<span class="per"> / project</span></div>
       <p class="price-desc">Full automation system with AI. Best for e-commerce brands and ops-heavy businesses.</p>
       <ul class="price-features">
-        <li>AI Abandoned cart recovery (Email + WhatsApp)</li>
+        <li>Full n8n workflow (unlimited nodes)</li>
         <li>AI agent / GPT integration</li>
-        <li>Customer tracking system (CRM)</li>
-        <li>Order → automation (notifications + logging)</li>
-        <li>Basic customer segmentation</li>
-        <li>Up to 3 workflow automations</li>
+        <li>Up to 5 app integrations</li>
+        <li>WhatsApp or Telegram deployment</li>
         <li>Power BI dashboard (optional)</li>
-        <li>30-days support + 1 free tweak</li>
+        <li>30-day support + 1 free tweak</li>
       </ul>
       <button class="btn-price primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Call</button>
     </div>
@@ -813,12 +890,12 @@
       <div class="price-amt"><sup>₹</sup>14,999<span class="per"> / project</span></div>
       <p class="price-desc">Ongoing automation partner. I become your dedicated AI ops person — building, maintaining, and expanding your stack.</p>
       <ul class="price-features">
-        <li>Multi-step automation funnels:</li>
-        <li>Upsell & retention automation</li>
-        <li>Performance tracking dashboard</li>
-        <li>Repeat customer follow-ups</li>
-        <li>Up to 6 workflow automations</li>
-        <li>Priority support (48h)</li>
+        <li>Unlimited workflow builds</li>
+        <li>Monthly strategy calls</li>
+        <li>Priority turnaround (&lt;48h)</li>
+        <li>Full stack ownership</li>
+        <li>Dedicated Slack channel</li>
+        <li>Monthly reporting dashboard</li>
       </ul>
       <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Let's Talk</button>
     </div>
@@ -832,7 +909,7 @@
     <h2>Ready to automate?<br/><span class="grad">Book a free 30-min call.</span></h2>
     <p>Tell me your process — I'll tell you exactly how to automate it. No commitment, no pitch deck.</p>
     <div class="cta-row">
-      <a href="mailto:mohamedanazcareer@gmail.com" class="btn-primary">📅 Book a Call</a>
+      <a href="/cdn-cgi/l/email-protection#066b696e676b63626768677c65677463637446616b676f6a2865696b" class="btn-primary">📅 Book a Call</a>
       <a href="https://wa.me/918122114041" class="btn-secondary">💬 WhatsApp Me</a>
     </div>
   </div>
@@ -859,29 +936,50 @@
       <li><a href="#work">Case Studies</a></li>
       <li><a href="#pricing">Pricing</a></li>
     </ul>
-    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Chennai, India</p>
+    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Tiruppur, India</p>
   </div>
 </footer>
 
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Stagger grid children
   document.querySelectorAll('.features-grid .fade-in, .services-grid .fade-in, .cases-grid .fade-in, .pricing-grid .fade-in, .stack-grid .fade-in').forEach((el, i) => {
     el.style.transitionDelay = (i % 6) * 0.08 + 's';
   });
+
+  // Robust fade-in observer with threshold:0 so it fires as soon as 1px is visible
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Safety net: reveal anything still hidden after 1.5s
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => el.classList.add('visible'));
+  }, 1500);
 
   window.addEventListener('scroll', () => {
     document.querySelector('nav').style.borderBottomColor =
       window.scrollY > 40 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)';
   });
-</script>
-</body>
-</html>
+
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('menuBtn');
+    const open = menu.classList.toggle('open');
+    btn.textContent = open ? '✕' : '☰';
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('menuBtn').textContent = '☰';
+    document.body.style.overflow = '';
+  }
+
+ 
