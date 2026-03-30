@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ZarzuoAI — AI Automation Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
   :root {
     --bg: #050814;
-    --bg2: #080d1f;
     --card: rgba(255,255,255,0.04);
     --card-border: rgba(255,255,255,0.08);
     --blue: #3b63f7;
@@ -18,588 +17,309 @@
     --blue-glow: rgba(59,99,247,0.25);
     --cyan: #00d4ff;
     --white: #f0f4ff;
-    --muted: rgba(200,210,255,0.55);
+    --muted: rgba(200,210,255,0.6);
     --accent: #7b5ea7;
+    --nav-h: 64px;
     --font-head: 'Syne', sans-serif;
     --font-body: 'DM Sans', sans-serif;
   }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
+
   body {
     background: var(--bg);
     color: var(--white);
     font-family: var(--font-body);
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.65;
     overflow-x: hidden;
   }
+
+  /* Fix anchor scroll behind fixed nav */
+  section, .scroll-target {
+    scroll-margin-top: calc(var(--nav-h) + 16px);
+  }
+
+  /* Noise */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb-1 {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(59,99,247,0.3) 0%, transparent 70%);
-    top: -200px; left: 50%;
-    transform: translateX(-50%);
-    animation: pulse 6s ease-in-out infinite alternate;
-  }
-  .orb-2 {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
-    top: 100px; right: -100px;
-    animation: pulseSimple 8s ease-in-out infinite alternate-reverse;
-  }
-  .orb-3 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(123,94,167,0.2) 0%, transparent 70%);
-    top: 200px; left: -80px;
-    animation: pulseSimple 7s ease-in-out infinite alternate;
-  }
-  @keyframes pulse {
-    from { opacity: 0.6; transform: scale(1) translateX(-50%); }
-    to   { opacity: 1;   transform: scale(1.1) translateX(-50%); }
-  }
-  @keyframes pulseSimple {
-    from { opacity: 0.5; transform: scale(1); }
-    to   { opacity: 1;   transform: scale(1.15); }
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
   }
 
-  /* NAV */
+  /* Orbs */
+  .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
+  .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(59,99,247,0.28) 0%, transparent 70%); top: -200px; left: 50%; transform: translateX(-50%); animation: orb1 6s ease-in-out infinite alternate; }
+  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,212,255,0.13) 0%, transparent 70%); top: 100px; right: -100px; animation: orbS 8s ease-in-out infinite alternate-reverse; }
+  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(123,94,167,0.18) 0%, transparent 70%); top: 200px; left: -80px; animation: orbS 7s ease-in-out infinite alternate; }
+  @keyframes orb1 { from { opacity:.6; transform:scale(1) translateX(-50%); } to { opacity:1; transform:scale(1.1) translateX(-50%); } }
+  @keyframes orbS { from { opacity:.5; transform:scale(1); } to { opacity:1; transform:scale(1.15); } }
+
+  /* ── NAV ── */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
     padding: 0 40px;
-    height: 64px;
-    background: rgba(5,8,20,0.85);
+    background: rgba(5,8,20,0.9);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    transition: border-color 0.3s;
   }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
-  .nav-logo-text {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px;
-    font-weight: 800;
-    color: #f0f4ff;
-    letter-spacing: -0.4px;
-  }
-  .nav-logo-text span {
-    color: #00d4ff;
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    list-style: none;
-  }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 400;
-    transition: color 0.2s;
-  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-text { font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: -0.4px; }
+  .nav-logo-text span { color: var(--cyan); }
+  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
   .nav-links a:hover { color: var(--white); }
-  .btn-nav {
-    background: var(--blue) !important;
-    color: #fff !important;
-    padding: 8px 18px;
-    border-radius: 8px;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-  }
-  .btn-nav:hover {
-    background: var(--blue-light) !important;
-    box-shadow: 0 0 20px var(--blue-glow);
-  }
-  .menu-btn { display: none; }
+  .btn-nav { background: var(--blue) !important; color: #fff !important; padding: 8px 20px; border-radius: 8px; font-weight: 500 !important; font-size: 14px !important; }
+  .btn-nav:hover { background: var(--blue-light) !important; box-shadow: 0 0 20px var(--blue-glow); }
+  .menu-btn { display: none; background: none; border: 1px solid rgba(255,255,255,0.12); color: var(--white); width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 18px; align-items: center; justify-content: center; transition: background 0.2s; }
+  .menu-btn:hover { background: rgba(255,255,255,0.08); }
 
-  /* HERO */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
+  /* ── MOBILE MENU ── */
+  .mobile-menu {
+    display: none;
+    position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 0;
+    background: rgba(5,8,20,0.98);
+    backdrop-filter: blur(24px);
+    z-index: 199;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 100px 24px 60px;
+    padding: 32px 28px;
+    gap: 0;
+    overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--muted); text-decoration: none;
+    font-family: var(--font-head); font-size: 22px; font-weight: 700;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    transition: color 0.2s;
+    display: block;
+  }
+  .mobile-menu a:hover { color: var(--white); }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu .mob-cta {
+    margin-top: 24px;
+    background: var(--blue); color: #fff !important;
+    text-align: center; padding: 16px !important;
+    border-radius: 12px; font-size: 18px !important;
+    border-bottom: none !important;
+  }
+  .mobile-menu .mob-cta:hover { background: var(--blue-light) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: calc(var(--nav-h) + 40px) 24px 60px;
     overflow: hidden;
   }
   .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(59,99,247,0.12);
-    border: 1px solid rgba(59,99,247,0.3);
-    border-radius: 100px;
-    padding: 6px 16px;
-    font-size: 13px;
-    color: var(--blue-light);
-    margin-bottom: 28px;
-    position: relative; z-index: 1;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(59,99,247,0.12); border: 1px solid rgba(59,99,247,0.3);
+    border-radius: 100px; padding: 7px 18px; font-size: 13px; color: var(--blue-light);
+    margin-bottom: 28px; position: relative; z-index: 1;
     animation: fadeUp 0.6s ease both;
   }
   .hero-badge .avatars { display: flex; }
   .hero-badge .avatars span {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    border: 2px solid var(--bg);
-    margin-left: -6px;
-    font-size: 11px;
-    display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--bg);
+    margin-left: -6px; font-size: 11px; display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, var(--blue), var(--accent));
   }
   .hero-badge .avatars span:first-child { margin-left: 0; }
   .hero h1 {
-    font-family: var(--font-head);
-    font-size: clamp(40px, 7vw, 80px);
-    font-weight: 800;
-    line-height: 1.07;
-    letter-spacing: -2px;
-    max-width: 780px;
-    position: relative; z-index: 1;
+    font-family: var(--font-head); font-size: clamp(36px, 6.5vw, 76px);
+    font-weight: 800; line-height: 1.08; letter-spacing: -2px;
+    max-width: 800px; position: relative; z-index: 1;
     animation: fadeUp 0.7s 0.1s ease both;
   }
   .grad {
     background: linear-gradient(90deg, #fff 20%, var(--cyan) 60%, var(--blue-light) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
-  .hero p {
-    margin-top: 20px;
-    font-size: 17px;
-    color: var(--muted);
-    max-width: 500px;
-    line-height: 1.65;
-    position: relative; z-index: 1;
+  .hero-sub {
+    margin-top: 22px; font-size: 17px; color: var(--muted);
+    max-width: 520px; line-height: 1.7; position: relative; z-index: 1;
     animation: fadeUp 0.7s 0.2s ease both;
   }
-  .hero-ctas {
-    display: flex;
-    gap: 12px;
-    margin-top: 36px;
-    position: relative; z-index: 1;
-    animation: fadeUp 0.7s 0.3s ease both;
-  }
+  .hero-ctas { display: flex; gap: 12px; margin-top: 36px; position: relative; z-index: 1; animation: fadeUp 0.7s 0.3s ease both; flex-wrap: wrap; justify-content: center; }
   .btn-primary {
-    background: var(--blue);
-    color: #fff;
-    padding: 13px 28px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    font-family: var(--font-body);
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
-    box-shadow: 0 4px 30px rgba(59,99,247,0.35);
+    background: var(--blue); color: #fff; padding: 14px 30px; border-radius: 10px;
+    font-size: 15px; font-weight: 500; font-family: var(--font-body); border: none;
+    cursor: pointer; text-decoration: none; transition: all 0.2s;
+    box-shadow: 0 4px 30px rgba(59,99,247,0.4);
   }
-  .btn-primary:hover {
-    background: var(--blue-light);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 40px rgba(59,99,247,0.5);
-  }
+  .btn-primary:hover { background: var(--blue-light); transform: translateY(-2px); box-shadow: 0 8px 40px rgba(59,99,247,0.5); }
   .btn-secondary {
-    background: rgba(255,255,255,0.06);
-    color: var(--white);
-    padding: 13px 28px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    border: 1px solid rgba(255,255,255,0.1);
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
+    background: rgba(255,255,255,0.06); color: var(--white); padding: 14px 30px;
+    border-radius: 10px; font-size: 15px; font-weight: 500; font-family: var(--font-body);
+    border: 1px solid rgba(255,255,255,0.12); cursor: pointer; text-decoration: none; transition: all 0.2s;
   }
-  .btn-secondary:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateY(-1px);
-  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
 
-  /* TICKER */
-  .ticker-section {
-    padding: 48px 0;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-  .ticker-label {
-    text-align: center;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 24px;
-    opacity: 0.7;
-  }
-  .ticker-outer {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    height: 44px;
-  }
-  .ticker-outer::before,
-  .ticker-outer::after {
-    content: '';
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 100px;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .ticker-outer::before { left: 0;  background: linear-gradient(to right, #050814, transparent); }
+  /* ── TICKER ── */
+  .ticker-section { padding: 52px 0; border-top: 1px solid rgba(255,255,255,0.07); }
+  .ticker-label { text-align: center; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; opacity: 0.65; }
+  .ticker-outer { position: relative; width: 100%; overflow: hidden; height: 44px; }
+  .ticker-outer::before, .ticker-outer::after { content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none; }
+  .ticker-outer::before { left: 0; background: linear-gradient(to right, #050814, transparent); }
   .ticker-outer::after  { right: 0; background: linear-gradient(to left,  #050814, transparent); }
-  .ticker-track {
-    display: flex;
-    align-items: center;
-    height: 44px;
-    width: max-content;
-    animation: ticker 28s linear infinite;
-  }
+  .ticker-track { display: flex; align-items: center; height: 44px; width: max-content; animation: ticker 30s linear infinite; }
   .ticker-track:hover { animation-play-state: paused; }
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  .ticker-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 32px;
-    color: rgba(200,210,255,0.6);
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    white-space: nowrap;
-    cursor: default;
-    transition: color 0.2s;
-  }
-  .ticker-item:hover { color: #f0f4ff; }
-  .ticker-dot {
-    display: block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #3b63f7;
-    flex-shrink: 0;
-  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-item { display: inline-flex; align-items: center; gap: 10px; padding: 0 32px; color: rgba(200,210,255,0.6); font-family: var(--font-head); font-size: 15px; font-weight: 600; white-space: nowrap; transition: color 0.2s; }
+  .ticker-item:hover { color: var(--white); }
+  .ticker-dot { display: block; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
 
-  /* SECTIONS */
-  section {
-    padding: 80px 24px;
-    max-width: 1120px;
-    margin: 0 auto;
-    width: 100%;
-  }
+  /* ── SHARED SECTION STYLES ── */
+  section { padding: 88px 24px; max-width: 1120px; margin: 0 auto; }
   .section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(59,99,247,0.1);
-    border: 1px solid rgba(59,99,247,0.25);
-    border-radius: 100px;
-    padding: 5px 14px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--blue-light);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(59,99,247,0.1); border: 1px solid rgba(59,99,247,0.25);
+    border-radius: 100px; padding: 5px 16px; font-size: 11px; font-weight: 600;
+    color: var(--blue-light); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 20px;
   }
-  .section-label::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--cyan);
-    display: inline-block;
-  }
-  h2.section-title {
-    font-family: var(--font-head);
-    font-size: clamp(28px, 4vw, 46px);
-    font-weight: 800;
-    letter-spacing: -1.2px;
-    line-height: 1.1;
-    color: var(--white);
-    margin-bottom: 14px;
-  }
-  p.section-sub {
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 520px;
-    line-height: 1.65;
-  }
+  .section-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); display: inline-block; }
+  h2.section-title { font-family: var(--font-head); font-size: clamp(26px, 3.8vw, 44px); font-weight: 800; letter-spacing: -1.2px; line-height: 1.12; color: var(--white); margin-bottom: 14px; }
+  p.section-sub { font-size: 16px; color: var(--muted); max-width: 540px; line-height: 1.7; }
+  .divider { width: 100%; height: 1px; background: rgba(255,255,255,0.07); max-width: 1120px; margin: 0 auto; }
 
-  /* FEATURES */
-  .features-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 48px;
-  }
+  /* ── WHAT I BUILD ── */
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
   .feat-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 32px;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 32px; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
   }
-  .feat-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(59,99,247,0.06) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .feat-card:hover { border-color: rgba(59,99,247,0.3); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .feat-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(59,99,247,0.07) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; border-radius: 18px; }
+  .feat-card:hover { border-color: rgba(59,99,247,0.35); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
   .feat-card:hover::before { opacity: 1; }
   .feat-card.wide { grid-column: span 2; }
-  .feat-icon {
-    width: 44px; height: 44px;
-    border-radius: 12px;
-    background: rgba(59,99,247,0.15);
-    border: 1px solid rgba(59,99,247,0.25);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-  .feat-card h3 { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 10px; color: var(--white); }
-  .feat-card p  { font-size: 14px; color: var(--muted); line-height: 1.65; }
-  .flow-diagram { margin-top: 28px; display: flex; align-items: center; flex-wrap: wrap; gap: 0; }
-  .flow-node {
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-size: 13px; font-weight: 500; color: var(--white); white-space: nowrap;
-  }
-  .node-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-  .flow-arrow { color: var(--blue); font-size: 20px; padding: 0 8px; flex-shrink: 0; }
+  .feat-icon { width: 46px; height: 46px; border-radius: 12px; background: rgba(59,99,247,0.15); border: 1px solid rgba(59,99,247,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+  .feat-card h3 { font-family: var(--font-head); font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; color: var(--white); line-height: 1.3; }
+  .feat-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .flow-diagram { margin-top: 28px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .flow-node { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--white); white-space: nowrap; }
+  .node-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .flow-arrow { color: var(--blue); font-size: 18px; flex-shrink: 0; }
 
-  /* SERVICES */
+  /* ── SERVICES ── */
   .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
   .svc-card {
     background: var(--card); border: 1px solid var(--card-border);
-    border-radius: 18px; padding: 30px 28px;
-    transition: all 0.3s; position: relative; overflow: hidden;
+    border-radius: 18px; padding: 30px 26px;
+    transition: border-color 0.3s, transform 0.3s; position: relative; overflow: hidden;
   }
-  .svc-card::after {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-    height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan));
-    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
-  }
-  .svc-card:hover { border-color: rgba(59,99,247,0.25); transform: translateY(-3px); }
+  .svc-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .svc-card:hover { border-color: rgba(59,99,247,0.3); transform: translateY(-4px); }
   .svc-card:hover::after { transform: scaleX(1); }
-  .svc-num { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--blue-light); letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 16px; }
-  .svc-card h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; color: var(--white); }
-  .svc-card p  { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
-  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .svc-num { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--blue-light); letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 14px; }
+  .svc-card h3 { font-family: var(--font-head); font-size: 17px; font-weight: 700; letter-spacing: -0.2px; margin-bottom: 10px; color: var(--white); line-height: 1.35; }
+  .svc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
   .tag { background: rgba(59,99,247,0.1); border: 1px solid rgba(59,99,247,0.2); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--blue-light); font-weight: 500; }
 
-  /* CASE STUDIES */
+  /* ── CASE STUDIES ── */
   .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
-  .case-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; padding: 32px; transition: all 0.3s; }
-  .case-card:hover { border-color: rgba(59,99,247,0.3); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-  .case-industry { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .case-tag { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--cyan); font-weight: 500; }
-  .case-icon { font-size: 28px; }
-  .case-card h3 { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 10px; color: var(--white); }
-  .case-card p  { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
-  .case-metrics {
-    display: flex;
-    gap: 0;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.07);
-    flex-wrap: wrap;
-  }
-  .metric {
-    flex: 1;
-    min-width: 80px;
-    padding: 12px 16px;
-    border-right: 1px solid rgba(255,255,255,0.07);
-    text-align: center;
-  }
-  .metric:first-child { padding-left: 0; text-align: left; }
-  .metric:last-child  { border-right: none; }
-  .metric .val {
-    font-family: var(--font-body);
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--white);
-    letter-spacing: -0.3px;
-    display: block;
-  }
-  .metric .lbl {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 3px;
-    display: block;
-    line-height: 1.4;
-  }
+  .case-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; padding: 32px; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+  .case-card:hover { border-color: rgba(59,99,247,0.35); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .case-industry { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .case-tag { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--cyan); font-weight: 600; letter-spacing: 0.03em; }
+  .case-icon { font-size: 26px; }
+  .case-card h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; color: var(--white); line-height: 1.35; }
+  .case-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .case-metrics { display: flex; gap: 24px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.07); flex-wrap: wrap; }
+  .metric .val { font-family: var(--font-head); font-size: 26px; font-weight: 800; color: var(--cyan); letter-spacing: -0.5px; }
+  .metric .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-  /* TECH STACK */
+  /* ── TECH STACK ── */
   .stack-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 12px; margin-top: 48px; }
-  .stack-pill {
-    background: var(--card); border: 1px solid var(--card-border);
-    border-radius: 12px; padding: 16px 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    font-size: 12px; font-weight: 500; color: var(--muted);
-    transition: all 0.2s; cursor: default; text-align: center;
-  }
-  .stack-pill:hover { border-color: rgba(59,99,247,0.3); color: var(--white); transform: translateY(-2px); }
-  .stack-pill .emoji { font-size: 24px; line-height: 1; }
+  .stack-pill { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: var(--muted); transition: all 0.2s; cursor: default; text-align: center; }
+  .stack-pill:hover { border-color: rgba(59,99,247,0.35); color: var(--white); transform: translateY(-2px); }
+  .stack-pill .emoji { font-size: 26px; line-height: 1; }
 
-  /* PRICING */
-  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
-  .price-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px 28px; position: relative; transition: all 0.3s; }
-  .price-card.featured { background: rgba(59,99,247,0.08); border-color: rgba(59,99,247,0.4); box-shadow: 0 0 60px rgba(59,99,247,0.12); }
-  .price-card:hover { transform: translateY(-4px); box-shadow: 0 24px 64px rgba(0,0,0,0.4); }
-  .popular-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: linear-gradient(90deg, var(--blue), var(--cyan));
-    color: #fff; font-size: 11px; font-weight: 600; padding: 4px 14px;
-    border-radius: 100px; white-space: nowrap;
-  }
-  .price-tier { font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-  .price-amt { font-family: var(--font-head); font-size: 42px; font-weight: 800; letter-spacing: -1.5px; color: var(--white); line-height: 1; margin-bottom: 6px; }
+  /* ── PRICING ── */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 56px; }
+  .price-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px 28px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+  .price-card.featured { background: rgba(59,99,247,0.08); border-color: rgba(59,99,247,0.45); box-shadow: 0 0 60px rgba(59,99,247,0.14); }
+  .price-card:hover { transform: translateY(-5px); box-shadow: 0 24px 64px rgba(0,0,0,0.4); }
+  .popular-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, var(--blue), var(--cyan)); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 100px; white-space: nowrap; letter-spacing: 0.04em; }
+  .price-tier { font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .price-amt { font-family: var(--font-head); font-size: 44px; font-weight: 800; letter-spacing: -1.5px; color: var(--white); line-height: 1; margin-bottom: 8px; }
   .price-amt sup { font-size: 22px; vertical-align: super; font-weight: 600; }
-  .price-amt .per { font-size: 14px; color: var(--muted); font-weight: 400; }
-  .price-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
-  .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--muted); }
-  .price-features li::before { content: '✓'; color: var(--cyan); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-  .btn-price { width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 500; font-family: var(--font-body); cursor: pointer; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--white); transition: all 0.2s; }
+  .price-amt .per { font-size: 14px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+  .price-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
+  .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+  .price-features li::before { content: '✓'; color: var(--cyan); font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+  .btn-price { width: 100%; padding: 13px; border-radius: 10px; font-size: 14px; font-weight: 600; font-family: var(--font-body); cursor: pointer; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--white); transition: all 0.2s; }
   .btn-price:hover { background: rgba(255,255,255,0.1); }
   .btn-price.primary { background: var(--blue); border-color: transparent; box-shadow: 0 4px 20px rgba(59,99,247,0.35); }
   .btn-price.primary:hover { background: var(--blue-light); box-shadow: 0 8px 30px rgba(59,99,247,0.5); }
 
-  /* CTA */
+  /* ── CTA ── */
   .cta-section { padding: 80px 24px; }
   .cta-box {
     max-width: 1120px; margin: 0 auto;
-    background: linear-gradient(135deg, rgba(59,99,247,0.15) 0%, rgba(0,212,255,0.05) 100%);
-    border: 1px solid rgba(59,99,247,0.25); border-radius: 24px;
+    background: linear-gradient(135deg, rgba(59,99,247,0.14) 0%, rgba(0,212,255,0.05) 100%);
+    border: 1px solid rgba(59,99,247,0.28); border-radius: 24px;
     padding: 72px 48px; text-align: center; position: relative; overflow: hidden;
   }
-  .cta-box::before {
-    content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-    width: 400px; height: 300px;
-    background: radial-gradient(circle, rgba(59,99,247,0.3) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .cta-box h2 { font-family: var(--font-head); font-size: clamp(28px,4vw,46px); font-weight: 800; letter-spacing: -1.2px; margin-bottom: 14px; position: relative; }
-  .cta-box p  { font-size: 16px; color: var(--muted); margin-bottom: 36px; position: relative; }
-  .cta-row { display: flex; gap: 12px; justify-content: center; position: relative; }
+  .cta-box::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 400px; height: 300px; background: radial-gradient(circle, rgba(59,99,247,0.28) 0%, transparent 70%); pointer-events: none; }
+  .cta-box h2 { font-family: var(--font-head); font-size: clamp(26px,4vw,44px); font-weight: 800; letter-spacing: -1.2px; margin-bottom: 14px; position: relative; }
+  .cta-box > p { font-size: 16px; color: var(--muted); margin-bottom: 36px; position: relative; }
+  .cta-row { display: flex; gap: 12px; justify-content: center; position: relative; flex-wrap: wrap; }
 
-  /* FOOTER */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 40px;
-    display: flex; align-items: center; justify-content: space-between;
-    max-width: 1200px; margin: 0 auto;
-  }
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 40px; display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
   .footer-left { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--white); }
-  .footer-right { font-size: 13px; color: var(--muted); }
-  .footer-links { display: flex; gap: 24px; list-style: none; margin-bottom: 8px; }
+  .footer-right { font-size: 13px; color: var(--muted); text-align: right; }
+  .footer-links { display: flex; gap: 24px; list-style: none; margin-bottom: 8px; justify-content: flex-end; }
   .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
   .footer-links a:hover { color: var(--white); }
 
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  /* Scroll animation — content always visible, just slides in */
-  .fade-in {
-    opacity: 1;
-    transform: translateY(28px);
-    transition: transform 0.6s ease;
-  }
-  .fade-in.visible {
-    transform: translateY(0);
-  }
-  .divider { display: block; width: 100%; max-width: 1120px; height: 1px; background: rgba(255,255,255,0.06); margin: 0 auto; }
+  /* ── SCROLL ANIMATION — never hides content ── */
+  .fade-in { opacity: 1; transform: translateY(26px); transition: transform 0.65s cubic-bezier(0.22,1,0.36,1); }
+  .fade-in.visible { transform: translateY(0); }
 
-  /* MOBILE MENU */
-  .mobile-menu {
-    display: none;
-    position: fixed;
-    top: 64px; left: 0; right: 0;
-    background: rgba(5,8,20,0.97);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    z-index: 99;
-    padding: 20px 24px 28px;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    transition: color 0.2s;
-  }
-  .mobile-menu a:hover { color: var(--white); }
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu .btn-mobile-cta {
-    margin-top: 12px;
-    background: var(--blue);
-    color: #fff !important;
-    text-align: center;
-    padding: 13px !important;
-    border-radius: 10px;
-    font-weight: 600 !important;
-    border-bottom: none !important;
-  }
-  .mobile-menu .btn-mobile-cta:hover { background: var(--blue-light) !important; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
 
+  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 0 20px; }
     .nav-links { display: none; }
-    .menu-btn { display: block; background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--white); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 18px; }
-    .features-grid, .cases-grid { grid-template-columns: 1fr; }
+    .menu-btn { display: flex; }
+    section { padding: 64px 20px; }
+    .features-grid { grid-template-columns: 1fr; }
     .feat-card.wide { grid-column: span 1; }
     .services-grid { grid-template-columns: 1fr; }
+    .cases-grid { grid-template-columns: 1fr; }
     .pricing-grid { grid-template-columns: 1fr; }
     .stack-grid { grid-template-columns: repeat(3,1fr); }
     footer { flex-direction: column; gap: 20px; text-align: center; }
     .footer-links { justify-content: center; }
+    .footer-right { text-align: center; }
     .flow-diagram { flex-wrap: wrap; }
+    .cta-box { padding: 48px 24px; }
+    .hero h1 { letter-spacing: -1.2px; }
+  }
+
+  @media (max-width: 480px) {
+    .stack-grid { grid-template-columns: repeat(2,1fr); }
+    .hero-ctas { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-secondary { text-align: center; }
   }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="mainNav">
   <a href="#" class="nav-logo">
     <svg width="34" height="34" viewBox="0 0 72 72" style="flex-shrink:0;display:block;">
       <rect x="0" y="0" width="72" height="72" rx="14" fill="#0a0f2e"/>
@@ -613,22 +333,22 @@
     <span class="nav-logo-text">Zarzuo<span>AI</span></span>
   </a>
   <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
+    <li><a href="#features">What I Build</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#work">Case Studies</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#contact" class="btn-nav">Book a Call</a></li>
   </ul>
-  <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
+  <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Open menu">☰</button>
 </nav>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#features" onclick="closeMenu()">Features</a>
+  <a href="#features" onclick="closeMenu()">What I Build</a>
   <a href="#services" onclick="closeMenu()">Services</a>
   <a href="#work"     onclick="closeMenu()">Case Studies</a>
   <a href="#pricing"  onclick="closeMenu()">Pricing</a>
-  <a href="#contact"  onclick="closeMenu()" class="btn-mobile-cta">📅 Book a Call</a>
+  <a href="#contact"  onclick="closeMenu()" class="mob-cta">📅 Book a Call</a>
 </div>
 
 <!-- HERO -->
@@ -637,16 +357,16 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
   <div class="hero-badge">
-    <div class="avatars">
-      <span>🇮🇳</span><span>🛒</span><span>🚀</span>
-    </div>
-    &nbsp; Serving businesses across e-commerce, SaaS &amp; ops
+    <div class="avatars"><span>🇮🇳</span><span>🛒</span><span>🚀</span></div>
+    &nbsp; Helping e-commerce &amp; SaaS businesses grow on autopilot
   </div>
-  <h1>The smartest way to<br/><span class="grad">automate your business</span></h1>
-  <p>AI-powered workflows built with n8n — from abandoned cart recovery to CRM pipelines. I ship automations that actually run in production.</p>
+  <h1>Save time. Reduce costs.<br/><span class="grad">Automate everything.</span></h1>
+  <p class="hero-sub">
+    I build intelligent automation systems that handle your repetitive work — so you and your team can focus on what actually grows your business.
+  </p>
   <div class="hero-ctas">
-    <a href="#contact" class="btn-primary">Get Started Now</a>
-    <a href="#work" class="btn-secondary">See My Work →</a>
+    <a href="#contact" class="btn-primary">Get Started Free →</a>
+    <a href="#work" class="btn-secondary">See Real Results</a>
   </div>
 </div>
 
@@ -665,6 +385,8 @@
       <span class="ticker-item"><span class="ticker-dot"></span>Google Sheets</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Stripe</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Power BI</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Meta API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Python</span>
       <span class="ticker-item"><span class="ticker-dot"></span>n8n</span>
       <span class="ticker-item"><span class="ticker-dot"></span>OpenAI</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Shopify</span>
@@ -675,53 +397,55 @@
       <span class="ticker-item"><span class="ticker-dot"></span>Google Sheets</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Stripe</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Power BI</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Meta API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Python</span>
     </div>
   </div>
 </div>
 
-<!-- FEATURES -->
+<!-- WHAT I BUILD -->
 <section id="features">
   <div class="fade-in">
-    <div class="section-label">What I build</div>
-    <h2 class="section-title">Automation that actually<br/>makes you money</h2>
-    <p class="section-sub">Not just connected apps — complete systems that recover revenue, qualify leads, and cut manual work to zero.</p>
+    <div class="section-label">What I Build</div>
+    <h2 class="section-title">Automation that works<br/>while you sleep</h2>
+    <p class="section-sub">Every system I build is designed to save real hours, recover real revenue, and run 24/7 without someone babysitting it.</p>
   </div>
   <div class="features-grid">
     <div class="feat-card fade-in">
       <div class="feat-icon">🛒</div>
       <h3>Abandoned Cart Recovery</h3>
-      <p>AI-powered WhatsApp sequences that detect cart abandonment on Shopify, personalize the message, and handle shopper objections in real time — not static email blasts.</p>
+      <p>When a customer leaves your Shopify store without buying, my system automatically sends them a personalised WhatsApp message — crafted by AI — that brings them back to complete the purchase. No manual follow-up needed.</p>
     </div>
     <div class="feat-card fade-in">
       <div class="feat-icon">🤖</div>
-      <h3>Conversational AI Agents</h3>
-      <p>RAG-powered chatbots and AI agents that understand context, answer product questions, and close deals — deployed on WhatsApp, Telegram, or your website.</p>
+      <h3>AI Chatbots &amp; Virtual Assistants</h3>
+      <p>Smart chatbots that understand your customers, answer product questions, handle common support requests, and pass complex issues to your team — available 24/7 on WhatsApp, Telegram, or your website.</p>
     </div>
     <div class="feat-card wide fade-in">
       <div class="feat-icon">⚡</div>
-      <h3>End-to-End n8n Workflow Automation</h3>
-      <p>From trigger to action — I design, build, and deploy production-ready n8n workflows connecting your entire stack.</p>
+      <h3>End-to-End Business Automation</h3>
+      <p>I connect all your apps into one seamless automated pipeline — from the moment something happens in your business, to the moment it's resolved — with zero manual steps in between.</p>
       <div class="flow-diagram">
-        <div class="flow-node"><div class="node-icon">🛒</div>Shopify Event</div>
+        <div class="flow-node"><div class="node-icon">🛒</div>Customer Action</div>
         <div class="flow-arrow">→</div>
-        <div class="flow-node"><div class="node-icon">⚡</div>n8n Workflow</div>
+        <div class="flow-node"><div class="node-icon">⚡</div>Automation Triggered</div>
         <div class="flow-arrow">→</div>
-        <div class="flow-node"><div class="node-icon">🧠</div>OpenAI</div>
+        <div class="flow-node"><div class="node-icon">🧠</div>AI Processes</div>
         <div class="flow-arrow">→</div>
-        <div class="flow-node"><div class="node-icon">💬</div>WhatsApp</div>
+        <div class="flow-node"><div class="node-icon">💬</div>Customer Notified</div>
         <div class="flow-arrow">→</div>
         <div class="flow-node"><div class="node-icon">📊</div>CRM Updated</div>
       </div>
     </div>
     <div class="feat-card fade-in">
       <div class="feat-icon">📊</div>
-      <h3>CRM &amp; Lead Automation</h3>
-      <p>Custom CRM pipelines with auto-scoring, Slack/email alerts, follow-up sequences, and Power BI dashboards — all connected through n8n.</p>
+      <h3>Lead Management &amp; CRM Automation</h3>
+      <p>Every new lead gets automatically captured, scored, added to your CRM, and followed up — with your team getting instant alerts only for the hottest prospects. Nothing falls through the cracks.</p>
     </div>
     <div class="feat-card fade-in">
       <div class="feat-icon">🔗</div>
-      <h3>API &amp; Webhook Integration</h3>
-      <p>I wire up any API — Stripe webhooks, Meta Cloud API, Airtable — into clean workflows that run 24/7 without babysitting.</p>
+      <h3>App &amp; Platform Integration</h3>
+      <p>Got apps that don't talk to each other? I connect Shopify, WhatsApp, Stripe, Google Sheets, and more into one unified system — so data flows automatically wherever it needs to go.</p>
     </div>
   </div>
 </section>
@@ -732,45 +456,45 @@
 <section id="services">
   <div class="fade-in">
     <div class="section-label">Services</div>
-    <h2 class="section-title">What you can hire me for</h2>
-    <p class="section-sub">Lean, fast, and production-ready. No bloated agencies — just focused execution.</p>
+    <h2 class="section-title">Exactly what you're<br/>paying for</h2>
+    <p class="section-sub">No vague deliverables. Each service is a concrete system you'll own and use — built fast, documented clearly.</p>
   </div>
   <div class="services-grid">
     <div class="svc-card fade-in">
       <div class="svc-num">01</div>
-      <h3>Workflow Automation</h3>
-      <p>Full n8n workflow design, deployment, and documentation. I map your process, build the flow, and hand you a system that runs itself.</p>
-      <div class="svc-tags"><span class="tag">n8n</span><span class="tag">Zapier Migration</span><span class="tag">Webhooks</span></div>
+      <h3>Business Workflow Automation</h3>
+      <p>I map out your manual processes, identify where time is being wasted, and build an automated system that handles it all — with full documentation so your team understands exactly how it works.</p>
+      <div class="svc-tags"><span class="tag">Process Mapping</span><span class="tag">Webhooks</span><span class="tag">Zapier Migration</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">02</div>
       <h3>AI Agent Development</h3>
-      <p>Custom GPT-4 agents with RAG pipelines, memory, and tool calls — trained on your data and deployed in your channels.</p>
-      <div class="svc-tags"><span class="tag">OpenAI</span><span class="tag">RAG</span><span class="tag">MCP Servers</span></div>
+      <p>Custom AI assistants trained on your business data — product catalogues, FAQs, pricing, policies. They answer customer questions accurately and escalate to humans when needed.</p>
+      <div class="svc-tags"><span class="tag">OpenAI GPT-4</span><span class="tag">Knowledge Base</span><span class="tag">Multi-channel</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">03</div>
       <h3>E-Commerce Automation</h3>
-      <p>Shopify + WhatsApp + AI stack for cart recovery, order confirmations, upsells, and post-purchase flows.</p>
-      <div class="svc-tags"><span class="tag">Shopify</span><span class="tag">Meta API</span><span class="tag">WhatsApp</span></div>
+      <p>Complete automation stack for online stores — cart recovery, order confirmation, shipping updates, review requests, and upsell messages — all sent automatically via WhatsApp.</p>
+      <div class="svc-tags"><span class="tag">Shopify</span><span class="tag">WhatsApp</span><span class="tag">Meta API</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">04</div>
-      <h3>CRM Buildout</h3>
-      <p>Custom CRM systems with lead scoring, automated follow-ups, and real-time dashboards — built lean, no overpriced SaaS required.</p>
+      <h3>CRM &amp; Lead Pipeline Setup</h3>
+      <p>A custom CRM system built for how your business actually works — with automatic lead scoring, follow-up reminders, team notifications, and a live dashboard to track everything.</p>
       <div class="svc-tags"><span class="tag">Airtable</span><span class="tag">Power BI</span><span class="tag">SQL</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">05</div>
-      <h3>Data Pipeline &amp; BI</h3>
-      <p>ETL pipelines, SQL databases, and Power BI dashboards that turn raw data into decisions — no data engineer needed.</p>
-      <div class="svc-tags"><span class="tag">PostgreSQL</span><span class="tag">Power BI</span></div>
+      <h3>Data &amp; Reporting Dashboards</h3>
+      <p>Stop copying data between spreadsheets. I build automated data pipelines that pull from all your sources and display everything in a clean, real-time dashboard your whole team can use.</p>
+      <div class="svc-tags"><span class="tag">PostgreSQL</span><span class="tag">Power BI</span><span class="tag">Google Sheets</span></div>
     </div>
     <div class="svc-card fade-in">
       <div class="svc-num">06</div>
-      <h3>Automation Audit</h3>
-      <p>One-time audit of your current stack and manual processes. I map everything and deliver a prioritized automation roadmap.</p>
-      <div class="svc-tags"><span class="tag">Strategy</span><span class="tag">Roadmap</span><span class="tag">1× Project</span></div>
+      <h3>Automation Audit &amp; Roadmap</h3>
+      <p>Not sure where to start? I'll audit your current tools and processes, identify the highest-impact automation opportunities, and hand you a prioritised roadmap — no commitment required.</p>
+      <div class="svc-tags"><span class="tag">Free Consultation</span><span class="tag">Strategy</span><span class="tag">Roadmap</span></div>
     </div>
   </div>
 </section>
@@ -781,46 +505,46 @@
 <section id="work">
   <div class="fade-in">
     <div class="section-label">Case Studies</div>
-    <h2 class="section-title">Real systems, real results</h2>
-    <p class="section-sub">Projects I've built that shipped to production and moved the needle.</p>
+    <h2 class="section-title">Real results from<br/>real projects</h2>
+    <p class="section-sub">Here's what I've actually built and shipped — with the numbers to prove it worked.</p>
   </div>
   <div class="cases-grid">
     <div class="case-card fade-in">
       <div class="case-industry"><span class="case-tag">E-Commerce</span><span class="case-icon">🛒</span></div>
-      <h3>Shopify Abandoned Cart Recovery via WhatsApp AI</h3>
-      <p>Built an n8n workflow that detects cart abandonment, generates a personalized WhatsApp message via GPT-4, and handles shopper objections conversationally — replacing static Klaviyo email flows.</p>
+      <h3>Recovering Lost Sales via WhatsApp for a Shopify Store</h3>
+      <p>Built a fully automated cart recovery system — when a customer abandons their cart, an AI-generated WhatsApp message goes out within minutes, personalised to their exact products. It holds a real conversation and handles objections on its own.</p>
       <div class="case-metrics">
-        <div class="metric"><span class="val">3× more</span><span class="lbl">Recovery vs email</span></div>
-        <div class="metric"><span class="val">Zero</span><span class="lbl">Manual effort</span></div>
-        <div class="metric"><span class="val">24/7</span><span class="lbl">Always running</span></div>
+        <div class="metric"><div class="val">3×</div><div class="lbl">More recovered vs email</div></div>
+        <div class="metric"><div class="val">~0</div><div class="lbl">Manual work required</div></div>
+        <div class="metric"><div class="val">24/7</div><div class="lbl">Runs on its own</div></div>
       </div>
     </div>
     <div class="case-card fade-in">
-      <div class="case-industry"><span class="case-tag">Sales Ops</span><span class="case-icon">📊</span></div>
-      <h3>AI Lead Qualification &amp; CRM Pipeline</h3>
-      <p>Automated lead intake from web forms → GPT scoring → CRM entry → Slack alerts → follow-up email sequence. Built on n8n + Airtable + OpenAI with a Power BI reporting layer.</p>
+      <div class="case-industry"><span class="case-tag">Sales Operations</span><span class="case-icon">📊</span></div>
+      <h3>Automating Lead Qualification for a Services Business</h3>
+      <p>Every enquiry from their website was being handled manually. I built an automated pipeline — leads get scored by AI, added to the CRM, and the sales team gets a Slack alert with a summary. Hot leads get an immediate follow-up email.</p>
       <div class="case-metrics">
-        <div class="metric"><span class="val">80%</span><span class="lbl">Time saved on ops</span></div>
-        <div class="metric"><span class="val">100%</span><span class="lbl">Leads auto-logged</span></div>
-        <div class="metric"><span class="val">2 days</span><span class="lbl">Build turnaround</span></div>
+        <div class="metric"><div class="val">80%</div><div class="lbl">Less admin time</div></div>
+        <div class="metric"><div class="val">100%</div><div class="lbl">Leads auto-logged</div></div>
+        <div class="metric"><div class="val">2 days</div><div class="lbl">Build time</div></div>
       </div>
     </div>
     <div class="case-card fade-in">
-      <div class="case-industry"><span class="case-tag">Support</span><span class="case-icon">💬</span></div>
-      <h3>RAG Chatbot for Product Q&amp;A</h3>
-      <p>Embedded a RAG pipeline over a Shopify product catalogue and deployed it as a WhatsApp + website chatbot — answers product questions, handles returns, escalates when needed.</p>
+      <div class="case-industry"><span class="case-tag">Customer Support</span><span class="case-icon">💬</span></div>
+      <h3>24/7 AI Support Bot That Knows Your Products</h3>
+      <p>Deployed an AI chatbot trained on the client's full product catalogue and FAQs. It handles returns, shipping queries, and product questions instantly — and escalates to a human only when it genuinely can't help.</p>
       <div class="case-metrics">
-        <div class="metric"><span class="val">70%</span><span class="lbl">Tickets deflected</span></div>
-        <div class="metric"><span class="val">&lt; 2 sec</span><span class="lbl">Response time</span></div>
+        <div class="metric"><div class="val">70%</div><div class="lbl">Support tickets eliminated</div></div>
+        <div class="metric"><div class="val">&lt;2s</div><div class="lbl">Average response time</div></div>
       </div>
     </div>
     <div class="case-card fade-in">
-      <div class="case-industry"><span class="case-tag">Data</span><span class="case-icon">⚙️</span></div>
-      <h3>ETL &amp; Business Intelligence Dashboard</h3>
-      <p>Built a Python + PostgreSQL + Power BI pipeline pulling from 4 data sources into a single executive dashboard — updated daily, no manual exports.</p>
+      <div class="case-industry"><span class="case-tag">Data &amp; Analytics</span><span class="case-icon">⚙️</span></div>
+      <h3>One Dashboard for All Business Data — Updated Daily</h3>
+      <p>The client was manually downloading reports from 4 different platforms every week. I built an automated pipeline that pulls everything together into a single executive dashboard — refreshed every morning, no exports needed.</p>
       <div class="case-metrics">
-        <div class="metric"><span class="val">4 sources</span><span class="lbl">Data unified</span></div>
-        <div class="metric"><span class="val">Daily</span><span class="lbl">Auto-refresh</span></div>
+        <div class="metric"><div class="val">4</div><div class="lbl">Data sources unified</div></div>
+        <div class="metric"><div class="val">Daily</div><div class="lbl">Auto-refreshed</div></div>
       </div>
     </div>
   </div>
@@ -832,8 +556,8 @@
 <section>
   <div class="fade-in">
     <div class="section-label">Tech Stack</div>
-    <h2 class="section-title">My automation toolkit</h2>
-    <p class="section-sub">Every tool chosen for production reliability — not hype.</p>
+    <h2 class="section-title">Tools I use to<br/>build your system</h2>
+    <p class="section-sub">Every tool in this list is production-tested — not just something that sounds impressive.</p>
   </div>
   <div class="stack-grid">
     <div class="stack-pill fade-in"><span class="emoji">⚡</span>n8n</div>
@@ -847,6 +571,7 @@
     <div class="stack-pill fade-in"><span class="emoji">🤖</span>Telegram Bot</div>
     <div class="stack-pill fade-in"><span class="emoji">📋</span>Google Sheets</div>
     <div class="stack-pill fade-in"><span class="emoji">⚙️</span>MCP Servers</div>
+    <div class="stack-pill fade-in"><span class="emoji">🔗</span>Meta API</div>
   </div>
 </section>
 
@@ -856,20 +581,20 @@
 <section id="pricing">
   <div class="fade-in">
     <div class="section-label">Pricing</div>
-    <h2 class="section-title">Simple, transparent pricing</h2>
-    <p class="section-sub">Project-based. No retainer traps. Pay for what you need, own what gets built.</p>
+    <h2 class="section-title">Straightforward pricing.<br/>No surprises.</h2>
+    <p class="section-sub">You pay per project. You own everything I build. No monthly fees, no lock-in — just a working system delivered to you.</p>
   </div>
   <div class="pricing-grid">
     <div class="price-card fade-in">
       <div class="price-tier">Starter</div>
       <div class="price-amt"><sup>₹</sup>4,999<span class="per"> / project</span></div>
-      <p class="price-desc">One focused automation. Ideal for small businesses wanting to test the value before going all-in.</p>
+      <p class="price-desc">Perfect for businesses that want to automate one specific task and see the results before investing further.</p>
       <ul class="price-features">
-        <li>1 n8n workflow (up to 5 nodes)</li>
-        <li>1 integration (Shopify, Airtable, etc.)</li>
-        <li>2 rounds of revisions</li>
-        <li>Loom walkthrough on delivery</li>
-        <li>7-day support window</li>
+        <li>One focused automation system</li>
+        <li>Connects up to 2 apps (e.g. Shopify + WhatsApp)</li>
+        <li>2 rounds of revisions included</li>
+        <li>Video walkthrough on delivery</li>
+        <li>7 days of post-delivery support</li>
       </ul>
       <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
     </div>
@@ -877,28 +602,28 @@
       <div class="popular-badge">Most Popular</div>
       <div class="price-tier">Growth</div>
       <div class="price-amt"><sup>₹</sup>6,999<span class="per"> / project</span></div>
-      <p class="price-desc">Full automation system with AI. Best for e-commerce brands and ops-heavy businesses.</p>
+      <p class="price-desc">A complete automation system with AI. Best for e-commerce stores and businesses ready to scale their operations.</p>
       <ul class="price-features">
-        <li>Full n8n workflow (unlimited nodes)</li>
-        <li>AI agent / GPT integration</li>
-        <li>Up to 5 app integrations</li>
+        <li>Full automation pipeline (no node limits)</li>
+        <li>AI-powered messaging or chatbot included</li>
+        <li>Connects up to 5 apps</li>
         <li>WhatsApp or Telegram deployment</li>
-        <li>Power BI dashboard (optional)</li>
-        <li>30-day support + 1 free tweak</li>
+        <li>Optional reporting dashboard</li>
+        <li>30 days support + 1 free update</li>
       </ul>
       <button class="btn-price primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Call</button>
     </div>
     <div class="price-card fade-in">
       <div class="price-tier">Advanced</div>
       <div class="price-amt"><sup>₹</sup>14,999<span class="per"> / project</span></div>
-      <p class="price-desc">Ongoing automation partner. I become your dedicated AI ops person — building, maintaining, and expanding your stack.</p>
+      <p class="price-desc">A large-scale, multi-system automation project — or an ongoing partnership where I handle all your automation needs month to month.</p>
       <ul class="price-features">
-        <li>Unlimited workflow builds</li>
-        <li>Monthly strategy calls</li>
-        <li>Priority turnaround (&lt;48h)</li>
-        <li>Full stack ownership</li>
-        <li>Dedicated Slack channel</li>
-        <li>Monthly reporting dashboard</li>
+        <li>Complex multi-system automation</li>
+        <li>Full AI agent with custom knowledge base</li>
+        <li>Unlimited app connections</li>
+        <li>Executive reporting dashboard</li>
+        <li>Priority delivery (&lt;48h turnaround)</li>
+        <li>Dedicated support channel</li>
       </ul>
       <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Let's Talk</button>
     </div>
@@ -906,14 +631,14 @@
 </section>
 
 <!-- CTA -->
-<div class="cta-section" id="contact">
+<div class="cta-section scroll-target" id="contact">
   <div class="cta-box">
-    <div class="section-label" style="margin:0 auto 20px;display:table;">Let's build something</div>
-    <h2>Ready to automate?<br/><span class="grad">Book a free 30-min call.</span></h2>
-    <p>Tell me your process — I'll tell you exactly how to automate it. No commitment, no pitch deck.</p>
+    <div class="section-label" style="margin:0 auto 20px;display:table;">Let's Talk</div>
+    <h2>Not sure where to start?<br/><span class="grad">Let's figure it out together.</span></h2>
+    <p>Tell me what's eating your team's time — I'll tell you exactly what to automate and how long it'll take. Free 30-minute call, no commitment.</p>
     <div class="cta-row">
-      <a href="/cdn-cgi/l/email-protection#066b696e676b63626768677c65677463637446616b676f6a2865696b" class="btn-primary">📅 Book a Call</a>
-      <a href="https://wa.me/918122114041" class="btn-secondary">💬 WhatsApp Me</a>
+      <a href="mailto:mohamedanazcareer@gmail.com" class="btn-primary">📅 Book a Free Call</a>
+      <a href="https://wa.me/918122114041" class="btn-secondary">💬 Message on WhatsApp</a>
     </div>
   </div>
 </div>
@@ -934,43 +659,17 @@
   </div>
   <div class="footer-right">
     <ul class="footer-links">
-      <li><a href="#features">Features</a></li>
+      <li><a href="#features">What I Build</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#work">Case Studies</a></li>
       <li><a href="#pricing">Pricing</a></li>
     </ul>
-    <p>© 2026 Mohamed Anas. AI Automation Freelancer · Chennai, India</p>
+    <p>© 2026 Mohamed Anas · AI Automation Specialist · Chennai, India</p>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Stagger grid children
-  document.querySelectorAll('.features-grid .fade-in, .services-grid .fade-in, .cases-grid .fade-in, .pricing-grid .fade-in, .stack-grid .fade-in').forEach((el, i) => {
-    el.style.transitionDelay = (i % 6) * 0.08 + 's';
-  });
-
-  // Robust fade-in observer with threshold:0 so it fires as soon as 1px is visible
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // Safety net: reveal anything still hidden after 1.5s
-  setTimeout(() => {
-    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => el.classList.add('visible'));
-  }, 1500);
-
-  window.addEventListener('scroll', () => {
-    document.querySelector('nav').style.borderBottomColor =
-      window.scrollY > 40 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)';
-  });
-
+<script>
+  // ── Mobile menu ──
   function toggleMenu() {
     const menu = document.getElementById('mobileMenu');
     const btn  = document.getElementById('menuBtn');
@@ -978,11 +677,40 @@
     btn.textContent = open ? '✕' : '☰';
     document.body.style.overflow = open ? 'hidden' : '';
   }
-
   function closeMenu() {
     document.getElementById('mobileMenu').classList.remove('open');
     document.getElementById('menuBtn').textContent = '☰';
     document.body.style.overflow = '';
   }
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu(); });
 
- 
+  // ── Scroll animation (never hides — just slides) ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -30px 0px' });
+
+  // Stagger grid children
+  document.querySelectorAll('.features-grid .fade-in, .services-grid .fade-in, .cases-grid .fade-in, .pricing-grid .fade-in, .stack-grid .fade-in').forEach((el, i) => {
+    el.style.transitionDelay = (i % 4) * 0.09 + 's';
+  });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Force-show anything still hidden after 1s (safety net)
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => el.classList.add('visible'));
+  }, 1000);
+
+  // ── Nav border on scroll ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').style.borderBottomColor =
+      window.scrollY > 40 ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.07)';
+  }, { passive: true });
+</script>
+</body>
+</html>
