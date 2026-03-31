@@ -219,8 +219,7 @@ footer{border-top:1px solid rgba(255,255,255,.07);padding:40px 48px;display:flex
 
 /* ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
-.fade-in{opacity:1;transform:translateY(28px);transition:transform .65s cubic-bezier(.22,1,.36,1);}
-.fade-in.visible{transform:translateY(0);}
+.fade-in{opacity:1;}
 
 /* RESPONSIVE */
 @media(max-width:900px){
@@ -852,11 +851,7 @@ const obs=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
 },{threshold:0,rootMargin:'0px 0px -20px 0px'});
 
-document.querySelectorAll('.problem-grid .fade-in,.solution-grid .fade-in,.cases-grid .fade-in,.pricing-grid .fade-in,.stack-grid .fade-in,.why-grid .fade-in,.arch-cards .fade-in,.stat-inner .fade-in').forEach((el,i)=>{
-  el.style.transitionDelay=(i%4)*0.08+'s';
-});
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
-setTimeout(()=>{document.querySelectorAll('.fade-in:not(.visible)').forEach(el=>el.classList.add('visible'));},800);
 
 window.addEventListener('scroll',()=>{
   document.getElementB
