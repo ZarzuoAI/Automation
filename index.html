@@ -3,317 +3,264 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ZarzuoAI — AI Automation Studio</title>
+<title>ZarzuoAI — AI Automation for Shopify Businesses</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg: #050814;
-    --card: rgba(255,255,255,0.04);
-    --card-border: rgba(255,255,255,0.08);
-    --blue: #3b63f7;
-    --blue-light: #5b80ff;
-    --blue-glow: rgba(59,99,247,0.25);
-    --cyan: #00d4ff;
-    --white: #f0f4ff;
-    --muted: rgba(200,210,255,0.6);
-    --accent: #7b5ea7;
-    --nav-h: 64px;
-    --font-head: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-  }
+:root{
+  --bg:#050814;--bg2:#080d1f;
+  --card:rgba(255,255,255,0.04);--card-b:rgba(255,255,255,0.08);
+  --blue:#3b63f7;--blue-l:#5b80ff;--blue-glow:rgba(59,99,247,0.25);
+  --cyan:#00d4ff;--white:#f0f4ff;--muted:rgba(200,210,255,0.6);
+  --green:#00e096;--amber:#f59e0b;
+  --nav-h:64px;
+  --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);font-size:16px;line-height:1.65;overflow-x:hidden;}
+section,.scroll-target{scroll-margin-top:calc(var(--nav-h) + 20px);}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;}
+.orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(59,99,247,0.25) 0%,transparent 70%);top:-250px;left:50%;transform:translateX(-50%);animation:orb1 7s ease-in-out infinite alternate;}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,255,0.12) 0%,transparent 70%);top:80px;right:-100px;animation:orbS 9s ease-in-out infinite alternate-reverse;}
+.orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(123,94,167,0.15) 0%,transparent 70%);top:200px;left:-80px;animation:orbS 8s ease-in-out infinite alternate;}
+@keyframes orb1{from{opacity:.5;transform:scale(1) translateX(-50%);}to{opacity:1;transform:scale(1.1) translateX(-50%);}}
+@keyframes orbS{from{opacity:.4;transform:scale(1);}to{opacity:.9;transform:scale(1.12);}}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(5,8,20,0.92);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.07);transition:border-color .3s;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-family:var(--fh);font-size:18px;font-weight:800;color:var(--white);letter-spacing:-.4px;}
+.nav-logo-text span{color:var(--cyan);}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.btn-nav{background:var(--blue)!important;color:#fff!important;padding:8px 20px;border-radius:8px;font-weight:500!important;}
+.btn-nav:hover{background:var(--blue-l)!important;box-shadow:0 0 20px var(--blue-glow);}
+.menu-btn{display:none;background:none;border:1px solid rgba(255,255,255,0.12);color:var(--white);width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:18px;align-items:center;justify-content:center;}
 
-  body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.65;
-    overflow-x: hidden;
-  }
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;background:rgba(5,8,20,0.98);backdrop-filter:blur(24px);z-index:199;flex-direction:column;padding:32px 28px;gap:0;overflow-y:auto;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{color:var(--muted);text-decoration:none;font-family:var(--fh);font-size:22px;font-weight:700;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.07);transition:color .2s;display:block;}
+.mobile-menu a:hover{color:var(--white);}
+.mobile-menu a:last-child{border-bottom:none;}
+.mob-cta{margin-top:24px;background:var(--blue);color:#fff!important;text-align:center;padding:16px!important;border-radius:12px;font-size:18px!important;border-bottom:none!important;}
+.mob-cta:hover{background:var(--blue-l)!important;}
 
-  /* Fix anchor scroll behind fixed nav */
-  section, .scroll-target {
-    scroll-margin-top: calc(var(--nav-h) + 16px);
-  }
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:calc(var(--nav-h) + 60px) 24px 60px;overflow:hidden;}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(59,99,247,0.12);border:1px solid rgba(59,99,247,0.32);border-radius:100px;padding:7px 18px;font-size:13px;color:var(--blue-l);margin-bottom:28px;position:relative;z-index:1;animation:fadeUp .6s ease both;}
+.hero h1{font-family:var(--fh);font-size:clamp(34px,6vw,74px);font-weight:800;line-height:1.07;letter-spacing:-2px;max-width:820px;position:relative;z-index:1;animation:fadeUp .7s .1s ease both;}
+.grad{background:linear-gradient(90deg,#fff 10%,var(--cyan) 55%,var(--blue-l) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{margin-top:22px;font-size:17px;color:var(--muted);max-width:540px;line-height:1.72;position:relative;z-index:1;animation:fadeUp .7s .2s ease both;}
+.hero-ctas{display:flex;gap:12px;margin-top:36px;position:relative;z-index:1;animation:fadeUp .7s .3s ease both;flex-wrap:wrap;justify-content:center;}
+.hero-trust{margin-top:32px;font-size:13px;color:var(--muted);opacity:.65;position:relative;z-index:1;animation:fadeUp .7s .4s ease both;}
+.btn-primary{background:var(--blue);color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;font-family:var(--fb);border:none;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 4px 30px rgba(59,99,247,.4);}
+.btn-primary:hover{background:var(--blue-l);transform:translateY(-2px);box-shadow:0 8px 40px rgba(59,99,247,.55);}
+.btn-secondary{background:rgba(255,255,255,.06);color:var(--white);padding:14px 32px;border-radius:10px;font-size:15px;font-weight:500;font-family:var(--fb);border:1px solid rgba(255,255,255,.12);cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-secondary:hover{background:rgba(255,255,255,.1);transform:translateY(-2px);}
 
-  /* Noise */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0;
-  }
+/* STAT BAR */
+.stat-bar{padding:52px 24px;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);}
+.stat-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.stat-item{text-align:left;padding:0 40px;border-right:1px solid rgba(255,255,255,.07);}
+.stat-item:first-child{padding-left:0;}
+.stat-item:last-child{border-right:none;}
+.stat-val{font-family:var(--fb);font-size:32px;font-weight:500;color:var(--white);letter-spacing:-.5px;line-height:1;margin-bottom:10px;}
+.stat-val span{color:var(--cyan);font-weight:600;}
+.stat-lbl{font-size:13.5px;color:var(--muted);line-height:1.6;}
 
-  /* Orbs */
-  .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
-  .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(59,99,247,0.28) 0%, transparent 70%); top: -200px; left: 50%; transform: translateX(-50%); animation: orb1 6s ease-in-out infinite alternate; }
-  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,212,255,0.13) 0%, transparent 70%); top: 100px; right: -100px; animation: orbS 8s ease-in-out infinite alternate-reverse; }
-  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(123,94,167,0.18) 0%, transparent 70%); top: 200px; left: -80px; animation: orbS 7s ease-in-out infinite alternate; }
-  @keyframes orb1 { from { opacity:.6; transform:scale(1) translateX(-50%); } to { opacity:1; transform:scale(1.1) translateX(-50%); } }
-  @keyframes orbS { from { opacity:.5; transform:scale(1); } to { opacity:1; transform:scale(1.15); } }
+/* TICKER */
+.ticker-section{padding:44px 0;background:var(--bg);}
+.ticker-label{text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;opacity:.6;}
+.ticker-outer{position:relative;width:100%;overflow:hidden;height:44px;}
+.ticker-outer::before,.ticker-outer::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none;}
+.ticker-outer::before{left:0;background:linear-gradient(to right,#050814,transparent);}
+.ticker-outer::after{right:0;background:linear-gradient(to left,#050814,transparent);}
+.ticker-track{display:flex;align-items:center;height:44px;width:max-content;animation:ticker 30s linear infinite;}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ticker-item{display:inline-flex;align-items:center;gap:10px;padding:0 30px;color:rgba(200,210,255,.6);font-family:var(--fh);font-size:14px;font-weight:600;white-space:nowrap;transition:color .2s;}
+.ticker-item:hover{color:var(--white);}
+.ticker-dot{display:block;width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0;}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    height: var(--nav-h);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 40px;
-    background: rgba(5,8,20,0.9);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    transition: border-color 0.3s;
-  }
-  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .nav-logo-text { font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: -0.4px; }
-  .nav-logo-text span { color: var(--cyan); }
-  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--white); }
-  .btn-nav { background: var(--blue) !important; color: #fff !important; padding: 8px 20px; border-radius: 8px; font-weight: 500 !important; font-size: 14px !important; }
-  .btn-nav:hover { background: var(--blue-light) !important; box-shadow: 0 0 20px var(--blue-glow); }
-  .menu-btn { display: none; background: none; border: 1px solid rgba(255,255,255,0.12); color: var(--white); width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 18px; align-items: center; justify-content: center; transition: background 0.2s; }
-  .menu-btn:hover { background: rgba(255,255,255,0.08); }
+/* SHARED */
+section{padding:88px 24px;max-width:1120px;margin:0 auto;}
+.section-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(59,99,247,.1);border:1px solid rgba(59,99,247,.25);border-radius:100px;padding:5px 16px;font-size:11px;font-weight:600;color:var(--blue-l);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;}
+.section-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);display:inline-block;}
+h2.stitle{font-family:var(--fh);font-size:clamp(26px,3.8vw,44px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;color:var(--white);margin-bottom:14px;}
+p.ssub{font-size:16px;color:var(--muted);max-width:560px;line-height:1.72;}
+.divider{width:100%;height:1px;background:rgba(255,255,255,.07);max-width:1120px;margin:0 auto;}
 
-  /* ── MOBILE MENU ── */
-  .mobile-menu {
-    display: none;
-    position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 0;
-    background: rgba(5,8,20,0.98);
-    backdrop-filter: blur(24px);
-    z-index: 199;
-    flex-direction: column;
-    padding: 32px 28px;
-    gap: 0;
-    overflow-y: auto;
-  }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu a {
-    color: var(--muted); text-decoration: none;
-    font-family: var(--font-head); font-size: 22px; font-weight: 700;
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    transition: color 0.2s;
-    display: block;
-  }
-  .mobile-menu a:hover { color: var(--white); }
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu .mob-cta {
-    margin-top: 24px;
-    background: var(--blue); color: #fff !important;
-    text-align: center; padding: 16px !important;
-    border-radius: 12px; font-size: 18px !important;
-    border-bottom: none !important;
-  }
-  .mobile-menu .mob-cta:hover { background: var(--blue-light) !important; }
+/* PROBLEM */
+.problem-section{background:var(--bg2);}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;}
+.prob-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:32px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;}
+.prob-card:hover{border-color:rgba(239,68,68,.3);transform:translateY(-3px);}
+.prob-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#ef4444,#f59e0b);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.prob-card:hover::before{transform:scaleX(1);}
+.prob-icon{font-size:32px;margin-bottom:18px;}
+.prob-card h3{font-family:var(--fh);font-size:18px;font-weight:700;color:var(--white);margin-bottom:10px;letter-spacing:-.3px;}
+.prob-card p{font-size:14px;color:var(--muted);line-height:1.72;}
+.prob-stat{margin-top:16px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:#fca5a5;}
 
-  /* ── HERO ── */
-  .hero {
-    position: relative; min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: calc(var(--nav-h) + 40px) 24px 60px;
-    overflow: hidden;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: rgba(59,99,247,0.12); border: 1px solid rgba(59,99,247,0.3);
-    border-radius: 100px; padding: 7px 18px; font-size: 13px; color: var(--blue-light);
-    margin-bottom: 28px; position: relative; z-index: 1;
-    animation: fadeUp 0.6s ease both;
-  }
-  .hero-badge .avatars { display: flex; }
-  .hero-badge .avatars span {
-    width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--bg);
-    margin-left: -6px; font-size: 11px; display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, var(--blue), var(--accent));
-  }
-  .hero-badge .avatars span:first-child { margin-left: 0; }
-  .hero h1 {
-    font-family: var(--font-head); font-size: clamp(36px, 6.5vw, 76px);
-    font-weight: 800; line-height: 1.08; letter-spacing: -2px;
-    max-width: 800px; position: relative; z-index: 1;
-    animation: fadeUp 0.7s 0.1s ease both;
-  }
-  .grad {
-    background: linear-gradient(90deg, #fff 20%, var(--cyan) 60%, var(--blue-light) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .hero-sub {
-    margin-top: 22px; font-size: 17px; color: var(--muted);
-    max-width: 520px; line-height: 1.7; position: relative; z-index: 1;
-    animation: fadeUp 0.7s 0.2s ease both;
-  }
-  .hero-ctas { display: flex; gap: 12px; margin-top: 36px; position: relative; z-index: 1; animation: fadeUp 0.7s 0.3s ease both; flex-wrap: wrap; justify-content: center; }
-  .btn-primary {
-    background: var(--blue); color: #fff; padding: 14px 30px; border-radius: 10px;
-    font-size: 15px; font-weight: 500; font-family: var(--font-body); border: none;
-    cursor: pointer; text-decoration: none; transition: all 0.2s;
-    box-shadow: 0 4px 30px rgba(59,99,247,0.4);
-  }
-  .btn-primary:hover { background: var(--blue-light); transform: translateY(-2px); box-shadow: 0 8px 40px rgba(59,99,247,0.5); }
-  .btn-secondary {
-    background: rgba(255,255,255,0.06); color: var(--white); padding: 14px 30px;
-    border-radius: 10px; font-size: 15px; font-weight: 500; font-family: var(--font-body);
-    border: 1px solid rgba(255,255,255,0.12); cursor: pointer; text-decoration: none; transition: all 0.2s;
-  }
-  .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+/* SOLUTION */
+.solution-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;}
+.sol-card{background:var(--card);border:1px solid var(--card-b);border-radius:18px;padding:30px;transition:border-color .3s,transform .3s;position:relative;overflow:hidden;}
+.sol-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.sol-card:hover{border-color:rgba(59,99,247,.3);transform:translateY(-4px);}
+.sol-card:hover::after{transform:scaleX(1);}
+.sol-icon{width:48px;height:48px;border-radius:12px;background:rgba(59,99,247,.15);border:1px solid rgba(59,99,247,.25);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;}
+.sol-card h3{font-family:var(--fh);font-size:18px;font-weight:700;color:var(--white);margin-bottom:10px;letter-spacing:-.3px;}
+.sol-card p{font-size:14px;color:var(--muted);line-height:1.72;}
+.sol-result{margin-top:16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--green);}
+.sol-result::before{content:'↑';font-size:14px;}
 
-  /* ── TICKER ── */
-  .ticker-section { padding: 52px 0; border-top: 1px solid rgba(255,255,255,0.07); }
-  .ticker-label { text-align: center; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; opacity: 0.65; }
-  .ticker-outer { position: relative; width: 100%; overflow: hidden; height: 44px; }
-  .ticker-outer::before, .ticker-outer::after { content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none; }
-  .ticker-outer::before { left: 0; background: linear-gradient(to right, #050814, transparent); }
-  .ticker-outer::after  { right: 0; background: linear-gradient(to left,  #050814, transparent); }
-  .ticker-track { display: flex; align-items: center; height: 44px; width: max-content; animation: ticker 30s linear infinite; }
-  .ticker-track:hover { animation-play-state: paused; }
-  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .ticker-item { display: inline-flex; align-items: center; gap: 10px; padding: 0 32px; color: rgba(200,210,255,0.6); font-family: var(--font-head); font-size: 15px; font-weight: 600; white-space: nowrap; transition: color 0.2s; }
-  .ticker-item:hover { color: var(--white); }
-  .ticker-dot { display: block; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+/* CASE STUDIES */
+.cases-grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:48px;}
+.case-card{background:var(--card);border:1px solid var(--card-b);border-radius:20px;padding:40px;transition:border-color .3s,transform .3s,box-shadow .3s;}
+.case-card:hover{border-color:rgba(59,99,247,.3);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.case-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap;}
+.case-meta{display:flex;flex-direction:column;gap:8px;}
+.case-tag{display:inline-block;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);border-radius:6px;padding:3px 12px;font-size:11px;color:var(--cyan);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.case-card h3{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.4px;line-height:1.25;}
+.case-metrics-row{display:flex;gap:32px;flex-wrap:wrap;padding:20px 0;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:4px;}
+.metric-badge{background:none;border:none;border-radius:0;padding:0;text-align:left;}
+.metric-badge .val{font-family:var(--fb);font-size:26px;font-weight:500;color:var(--white);letter-spacing:-.5px;line-height:1;margin-bottom:4px;}
+.metric-badge .lbl{font-size:12px;color:var(--muted);line-height:1.5;}
+.case-body{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;}
+.case-block h4{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--blue-l);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.case-block p{font-size:14px;color:var(--muted);line-height:1.72;}
+.workflow-steps{margin-top:24px;}
+.workflow-steps h4{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--blue-l);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.wf-track{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+.wf-step{flex:1;min-width:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:14px 16px;position:relative;}
+.wf-step:first-child{border-radius:10px 0 0 10px;}
+.wf-step:last-child{border-radius:0 10px 10px 0;}
+.wf-step .ws-label{font-size:10px;font-weight:700;color:var(--blue-l);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.wf-step .ws-val{font-size:13px;color:var(--white);font-weight:500;line-height:1.4;}
+.wf-arrow{display:flex;align-items:center;color:var(--blue);font-size:16px;padding:0 4px;flex-shrink:0;}
+.reliability-box{margin-top:24px;background:rgba(59,99,247,.06);border:1px solid rgba(59,99,247,.2);border-radius:12px;padding:20px 24px;}
+.reliability-box h4{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--blue-l);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+.rel-items{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.rel-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted);}
+.rel-item::before{content:'🛡';font-size:12px;flex-shrink:0;margin-top:1px;}
 
-  /* ── SHARED SECTION STYLES ── */
-  section { padding: 88px 24px; max-width: 1120px; margin: 0 auto; }
-  .section-label {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(59,99,247,0.1); border: 1px solid rgba(59,99,247,0.25);
-    border-radius: 100px; padding: 5px 16px; font-size: 11px; font-weight: 600;
-    color: var(--blue-light); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 20px;
-  }
-  .section-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); display: inline-block; }
-  h2.section-title { font-family: var(--font-head); font-size: clamp(26px, 3.8vw, 44px); font-weight: 800; letter-spacing: -1.2px; line-height: 1.12; color: var(--white); margin-bottom: 14px; }
-  p.section-sub { font-size: 16px; color: var(--muted); max-width: 540px; line-height: 1.7; }
-  .divider { width: 100%; height: 1px; background: rgba(255,255,255,0.07); max-width: 1120px; margin: 0 auto; }
+/* ARCHITECTURE */
+.arch-section{background:var(--bg2);}
+.arch-flow{margin-top:48px;display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;}
+.arch-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 8px;}
+.arch-circle{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px;border:2px solid;flex-shrink:0;}
+.arch-s1 .arch-circle{background:rgba(59,99,247,.15);border-color:rgba(59,99,247,.4);}
+.arch-s2 .arch-circle{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.4);}
+.arch-s3 .arch-circle{background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.4);}
+.arch-s4 .arch-circle{background:rgba(0,224,150,.1);border-color:rgba(0,224,150,.4);}
+.arch-s5 .arch-circle{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.4);}
+.arch-s6 .arch-circle{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.4);}
+.arch-step h4{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.arch-step p{font-size:12px;color:var(--muted);line-height:1.5;}
+.arch-connector{display:flex;align-items:center;justify-content:center;padding-top:20px;color:rgba(59,99,247,.5);font-size:18px;}
+.arch-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+.arch-card{background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:22px;}
+.arch-card h4{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.arch-card p{font-size:13.5px;color:var(--muted);line-height:1.65;}
 
-  /* ── WHAT I BUILD ── */
-  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
-  .feat-card {
-    background: var(--card); border: 1px solid var(--card-border); border-radius: 18px;
-    padding: 32px; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    position: relative; overflow: hidden;
-  }
-  .feat-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(59,99,247,0.07) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; border-radius: 18px; }
-  .feat-card:hover { border-color: rgba(59,99,247,0.35); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
-  .feat-card:hover::before { opacity: 1; }
-  .feat-card.wide { grid-column: span 2; }
-  .feat-icon { width: 46px; height: 46px; border-radius: 12px; background: rgba(59,99,247,0.15); border: 1px solid rgba(59,99,247,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
-  .feat-card h3 { font-family: var(--font-head); font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; color: var(--white); line-height: 1.3; }
-  .feat-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .flow-diagram { margin-top: 28px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-  .flow-node { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--white); white-space: nowrap; }
-  .node-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-  .flow-arrow { color: var(--blue); font-size: 18px; flex-shrink: 0; }
+/* WHY ME */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px;}
+.why-card{background:var(--card);border:1px solid var(--card-b);border-radius:18px;padding:28px 30px;display:flex;gap:18px;align-items:flex-start;transition:border-color .3s,transform .3s;}
+.why-card:hover{border-color:rgba(59,99,247,.3);transform:translateY(-3px);}
+.why-icon{width:44px;height:44px;border-radius:10px;background:rgba(59,99,247,.15);border:1px solid rgba(59,99,247,.25);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.why-card h3{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.3;}
+.why-card p{font-size:14px;color:var(--muted);line-height:1.7;}
 
-  /* ── SERVICES ── */
-  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
-  .svc-card {
-    background: var(--card); border: 1px solid var(--card-border);
-    border-radius: 18px; padding: 30px 26px;
-    transition: border-color 0.3s, transform 0.3s; position: relative; overflow: hidden;
-  }
-  .svc-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
-  .svc-card:hover { border-color: rgba(59,99,247,0.3); transform: translateY(-4px); }
-  .svc-card:hover::after { transform: scaleX(1); }
-  .svc-num { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--blue-light); letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 14px; }
-  .svc-card h3 { font-family: var(--font-head); font-size: 17px; font-weight: 700; letter-spacing: -0.2px; margin-bottom: 10px; color: var(--white); line-height: 1.35; }
-  .svc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
-  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
-  .tag { background: rgba(59,99,247,0.1); border: 1px solid rgba(59,99,247,0.2); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--blue-light); font-weight: 500; }
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px;}
+.price-card{background:var(--card);border:1px solid var(--card-b);border-radius:20px;padding:36px 28px;position:relative;transition:transform .3s,box-shadow .3s;}
+.price-card.featured{background:rgba(59,99,247,.07);border-color:rgba(59,99,247,.45);box-shadow:0 0 60px rgba(59,99,247,.13);}
+.price-card:hover{transform:translateY(-5px);box-shadow:0 28px 64px rgba(0,0,0,.4);}
+.pop-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--blue),var(--cyan));color:#fff;font-size:11px;font-weight:700;padding:4px 16px;border-radius:100px;white-space:nowrap;letter-spacing:.04em;}
+.price-tier{font-family:var(--fb);font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.price-amt{font-family:var(--fb);font-size:32px;font-weight:500;letter-spacing:-.5px;color:var(--white);line-height:1;margin-bottom:4px;}
+.price-amt sup{font-size:16px;vertical-align:super;font-weight:500;}
+.price-range{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.price-desc{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.07);}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
+.price-features li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--muted);line-height:1.5;}
+.price-features li::before{content:'✓';color:var(--cyan);font-weight:800;flex-shrink:0;margin-top:1px;}
+.btn-price{width:100%;padding:13px;border-radius:10px;font-size:14px;font-weight:600;font-family:var(--fb);cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--white);transition:all .2s;}
+.btn-price:hover{background:rgba(255,255,255,.1);}
+.btn-price.primary{background:var(--blue);border-color:transparent;box-shadow:0 4px 20px rgba(59,99,247,.35);}
+.btn-price.primary:hover{background:var(--blue-l);box-shadow:0 8px 30px rgba(59,99,247,.5);}
 
-  /* ── CASE STUDIES ── */
-  .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
-  .case-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; padding: 32px; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
-  .case-card:hover { border-color: rgba(59,99,247,0.35); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-  .case-industry { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-  .case-tag { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--cyan); font-weight: 600; letter-spacing: 0.03em; }
-  .case-icon { font-size: 26px; }
-  .case-card h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; color: var(--white); line-height: 1.35; }
-  .case-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
-  .case-metrics { display: flex; gap: 24px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.07); flex-wrap: wrap; }
-  .metric .val { font-family: var(--font-head); font-size: 26px; font-weight: 800; color: var(--cyan); letter-spacing: -0.5px; }
-  .metric .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+/* STACK */
+.stack-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:48px;}
+.stack-pill{background:var(--card);border:1px solid var(--card-b);border-radius:12px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--muted);transition:all .2s;cursor:default;text-align:center;}
+.stack-pill:hover{border-color:rgba(59,99,247,.35);color:var(--white);transform:translateY(-2px);}
+.stack-pill .emoji{font-size:26px;line-height:1;}
 
-  /* ── TECH STACK ── */
-  .stack-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 12px; margin-top: 48px; }
-  .stack-pill { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: var(--muted); transition: all 0.2s; cursor: default; text-align: center; }
-  .stack-pill:hover { border-color: rgba(59,99,247,0.35); color: var(--white); transform: translateY(-2px); }
-  .stack-pill .emoji { font-size: 26px; line-height: 1; }
+/* CTA */
+.cta-section{padding:80px 24px;}
+.cta-box{max-width:1120px;margin:0 auto;background:linear-gradient(135deg,rgba(59,99,247,.14) 0%,rgba(0,212,255,.05) 100%);border:1px solid rgba(59,99,247,.28);border-radius:24px;padding:72px 48px;text-align:center;position:relative;overflow:hidden;}
+.cta-box::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:350px;background:radial-gradient(circle,rgba(59,99,247,.26) 0%,transparent 70%);pointer-events:none;}
+.cta-box h2{font-family:var(--fh);font-size:clamp(24px,4vw,44px);font-weight:800;letter-spacing:-1.2px;margin-bottom:14px;position:relative;}
+.cta-box>p{font-size:16px;color:var(--muted);margin-bottom:36px;position:relative;max-width:560px;margin-left:auto;margin-right:auto;}
+.cta-row{display:flex;gap:12px;justify-content:center;position:relative;flex-wrap:wrap;}
 
-  /* ── PRICING ── */
-  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 56px; }
-  .price-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px 28px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
-  .price-card.featured { background: rgba(59,99,247,0.08); border-color: rgba(59,99,247,0.45); box-shadow: 0 0 60px rgba(59,99,247,0.14); }
-  .price-card:hover { transform: translateY(-5px); box-shadow: 0 24px 64px rgba(0,0,0,0.4); }
-  .popular-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, var(--blue), var(--cyan)); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 100px; white-space: nowrap; letter-spacing: 0.04em; }
-  .price-tier { font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-  .price-amt { font-family: var(--font-head); font-size: 44px; font-weight: 800; letter-spacing: -1.5px; color: var(--white); line-height: 1; margin-bottom: 8px; }
-  .price-amt sup { font-size: 22px; vertical-align: super; font-weight: 600; }
-  .price-amt .per { font-size: 14px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
-  .price-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
-  .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--muted); line-height: 1.5; }
-  .price-features li::before { content: '✓'; color: var(--cyan); font-weight: 800; flex-shrink: 0; margin-top: 1px; }
-  .btn-price { width: 100%; padding: 13px; border-radius: 10px; font-size: 14px; font-weight: 600; font-family: var(--font-body); cursor: pointer; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--white); transition: all 0.2s; }
-  .btn-price:hover { background: rgba(255,255,255,0.1); }
-  .btn-price.primary { background: var(--blue); border-color: transparent; box-shadow: 0 4px 20px rgba(59,99,247,0.35); }
-  .btn-price.primary:hover { background: var(--blue-light); box-shadow: 0 8px 30px rgba(59,99,247,0.5); }
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,.07);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;}
+.footer-left{display:flex;align-items:center;gap:10px;font-family:var(--fh);font-size:15px;font-weight:700;color:var(--white);}
+.footer-right{font-size:13px;color:var(--muted);text-align:right;}
+.footer-links{display:flex;gap:24px;list-style:none;margin-bottom:8px;justify-content:flex-end;flex-wrap:wrap;}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s;}
+.footer-links a:hover{color:var(--white);}
 
-  /* ── CTA ── */
-  .cta-section { padding: 80px 24px; }
-  .cta-box {
-    max-width: 1120px; margin: 0 auto;
-    background: linear-gradient(135deg, rgba(59,99,247,0.14) 0%, rgba(0,212,255,0.05) 100%);
-    border: 1px solid rgba(59,99,247,0.28); border-radius: 24px;
-    padding: 72px 48px; text-align: center; position: relative; overflow: hidden;
-  }
-  .cta-box::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 400px; height: 300px; background: radial-gradient(circle, rgba(59,99,247,0.28) 0%, transparent 70%); pointer-events: none; }
-  .cta-box h2 { font-family: var(--font-head); font-size: clamp(26px,4vw,44px); font-weight: 800; letter-spacing: -1.2px; margin-bottom: 14px; position: relative; }
-  .cta-box > p { font-size: 16px; color: var(--muted); margin-bottom: 36px; position: relative; }
-  .cta-row { display: flex; gap: 12px; justify-content: center; position: relative; flex-wrap: wrap; }
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:1;transform:translateY(28px);transition:transform .65s cubic-bezier(.22,1,.36,1);}
+.fade-in.visible{transform:translateY(0);}
 
-  /* ── FOOTER ── */
-  footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 40px; display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
-  .footer-left { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--white); }
-  .footer-right { font-size: 13px; color: var(--muted); text-align: right; }
-  .footer-links { display: flex; gap: 24px; list-style: none; margin-bottom: 8px; justify-content: flex-end; }
-  .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--white); }
-
-  /* ── SCROLL ANIMATION — never hides content ── */
-  .fade-in { opacity: 1; transform: translateY(26px); transition: transform 0.65s cubic-bezier(0.22,1,0.36,1); }
-  .fade-in.visible { transform: translateY(0); }
-
-  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    nav { padding: 0 20px; }
-    .nav-links { display: none; }
-    .menu-btn { display: flex; }
-    section { padding: 64px 20px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .feat-card.wide { grid-column: span 1; }
-    .services-grid { grid-template-columns: 1fr; }
-    .cases-grid { grid-template-columns: 1fr; }
-    .pricing-grid { grid-template-columns: 1fr; }
-    .stack-grid { grid-template-columns: repeat(3,1fr); }
-    footer { flex-direction: column; gap: 20px; text-align: center; }
-    .footer-links { justify-content: center; }
-    .footer-right { text-align: center; }
-    .flow-diagram { flex-wrap: wrap; }
-    .cta-box { padding: 48px 24px; }
-    .hero h1 { letter-spacing: -1.2px; }
-  }
-
-  @media (max-width: 480px) {
-    .stack-grid { grid-template-columns: repeat(2,1fr); }
-    .hero-ctas { flex-direction: column; width: 100%; }
-    .btn-primary, .btn-secondary { text-align: center; }
-  }
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .menu-btn{display:flex;}
+  section{padding:64px 20px;}
+  .stat-inner{grid-template-columns:repeat(2,1fr);}
+  .stat-item{padding:20px 0;border-right:none;border-bottom:1px solid rgba(255,255,255,.07);}
+  .stat-item:nth-child(even){padding-left:24px;border-left:1px solid rgba(255,255,255,.07);}
+  .stat-item:nth-last-child(-n+2){border-bottom:none;}
+  .problem-grid{grid-template-columns:1fr;}
+  .solution-grid{grid-template-columns:1fr;}
+  .case-body{grid-template-columns:1fr;}
+  .arch-flow{grid-template-columns:repeat(3,1fr);gap:16px;}
+  .arch-connector{display:none;}
+  .arch-cards{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .stack-grid{grid-template-columns:repeat(3,1fr);}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:32px 20px;}
+  .footer-links{justify-content:center;}
+  .footer-right{text-align:center;}
+  .cta-box{padding:48px 24px;}
+  .hero h1{letter-spacing:-1.2px;}
+  .wf-track{flex-direction:column;gap:8px;}
+  .wf-step{border-radius:10px!important;}
+  .wf-arrow{transform:rotate(90deg);}
+  .case-header{flex-direction:column;}
+  .rel-items{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .stack-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-ctas{flex-direction:column;width:100%;}
+  .btn-primary,.btn-secondary{text-align:center;}
+  .stat-val{font-size:24px;}
+  .arch-flow{grid-template-columns:repeat(2,1fr);}
+  .case-metrics-row{gap:10px;}
+  .metric-badge{min-width:80px;}
+}
 </style>
 </head>
 <body>
@@ -333,22 +280,23 @@
     <span class="nav-logo-text">Zarzuo<span>AI</span></span>
   </a>
   <ul class="nav-links">
-    <li><a href="#features">What I Build</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#work">Case Studies</a></li>
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#cases">Case Studies</a></li>
+    <li><a href="#why">Why Me</a></li>
     <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#contact" class="btn-nav">Book a Call</a></li>
+    <li><a href="#contact" class="btn-nav">Book Free Call</a></li>
   </ul>
   <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Open menu">☰</button>
 </nav>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#features" onclick="closeMenu()">What I Build</a>
-  <a href="#services" onclick="closeMenu()">Services</a>
-  <a href="#work"     onclick="closeMenu()">Case Studies</a>
-  <a href="#pricing"  onclick="closeMenu()">Pricing</a>
-  <a href="#contact"  onclick="closeMenu()" class="mob-cta">📅 Book a Call</a>
+  <a href="#problem" onclick="closeMenu()">The Problem</a>
+  <a href="#cases"   onclick="closeMenu()">Case Studies</a>
+  <a href="#arch"    onclick="closeMenu()">How It Works</a>
+  <a href="#why"     onclick="closeMenu()">Why Me</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="#contact" onclick="closeMenu()" class="mob-cta">📅 Book Free Call</a>
 </div>
 
 <!-- HERO -->
@@ -356,145 +304,129 @@
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
-  <div class="hero-badge">
-    <div class="avatars"><span>🇮🇳</span><span>🛒</span><span>🚀</span></div>
-    &nbsp; Helping e-commerce &amp; SaaS businesses grow on autopilot
-  </div>
-  <h1>Save time. Reduce costs.<br/><span class="grad">Automate everything.</span></h1>
-  <p class="hero-sub">
-    I build intelligent automation systems that handle your repetitive work — so you and your team can focus on what actually grows your business.
-  </p>
+  <div class="hero-badge">🎯 Specialising in Shopify &amp; E-Commerce Automation · Chennai, India</div>
+  <h1>Stop losing revenue<br/>to <span class="grad">slow &amp; manual processes</span></h1>
+  <p class="hero-sub">I build AI-powered automation systems that recover abandoned carts, respond to customers instantly, and eliminate repetitive manual work — so your Shopify store grows without growing your team.</p>
   <div class="hero-ctas">
-    <a href="#contact" class="btn-primary">Get Started Free →</a>
-    <a href="#work" class="btn-secondary">See Real Results</a>
+    <a href="#contact" class="btn-primary">📅 Book a Free Audit Call</a>
+    <a href="#cases" class="btn-secondary">See Real Results →</a>
+  </div>
+  <p class="hero-trust">✔ No fluff &nbsp;·&nbsp; ✔ Measurable results &nbsp;·&nbsp; ✔ System built to run 24/7 without breaking</p>
+</div>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat-inner">
+    <div class="stat-item fade-in">
+      <div class="stat-val"><span>15–25%</span></div>
+      <div class="stat-lbl">Abandoned carts recovered<br/>through automated follow-ups</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-val"><span>&lt;30s</span></div>
+      <div class="stat-lbl">Customer response time<br/>vs industry average of 2+ hours</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-val"><span>5 hrs</span></div>
+      <div class="stat-lbl">Manual work saved per day<br/>across operations</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-val"><span>24/7</span></div>
+      <div class="stat-lbl">System uptime with<br/>built-in fallback &amp; retry logic</div>
+    </div>
   </div>
 </div>
 
 <!-- TICKER -->
 <div class="ticker-section">
-  <p class="ticker-label">Tools &amp; integrations I work with</p>
+  <p class="ticker-label">Tools &amp; integrations I build with</p>
   <div class="ticker-outer">
     <div class="ticker-track">
       <span class="ticker-item"><span class="ticker-dot"></span>n8n</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>OpenAI</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>OpenAI GPT-4</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Shopify</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>WhatsApp API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>WhatsApp Cloud API</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Airtable</span>
       <span class="ticker-item"><span class="ticker-dot"></span>PostgreSQL</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Telegram Bot</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Google Sheets</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Stripe</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Power BI</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>Meta API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Meta Business API</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Python</span>
       <span class="ticker-item"><span class="ticker-dot"></span>n8n</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>OpenAI</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>OpenAI GPT-4</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Shopify</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>WhatsApp API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>WhatsApp Cloud API</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Airtable</span>
       <span class="ticker-item"><span class="ticker-dot"></span>PostgreSQL</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Telegram Bot</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Google Sheets</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Stripe</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Power BI</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>Meta API</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Meta Business API</span>
       <span class="ticker-item"><span class="ticker-dot"></span>Python</span>
     </div>
   </div>
 </div>
 
-<!-- WHAT I BUILD -->
-<section id="features">
+<!-- PROBLEM -->
+<div class="problem-section">
+<section id="problem">
   <div class="fade-in">
-    <div class="section-label">What I Build</div>
-    <h2 class="section-title">Automation that works<br/>while you sleep</h2>
-    <p class="section-sub">Every system I build is designed to save real hours, recover real revenue, and run 24/7 without someone babysitting it.</p>
+    <div class="section-chip">The Problem</div>
+    <h2 class="stitle">Your store is losing money<br/>every single day</h2>
+    <p class="ssub">These aren't small inconveniences — they're revenue leaks that compound over time. Most Shopify store owners don't realise how much they're losing until they see the numbers.</p>
   </div>
-  <div class="features-grid">
-    <div class="feat-card fade-in">
-      <div class="feat-icon">🛒</div>
-      <h3>Abandoned Cart Recovery</h3>
-      <p>When a customer leaves your Shopify store without buying, my system automatically sends them a personalised WhatsApp message — crafted by AI — that brings them back to complete the purchase. No manual follow-up needed.</p>
+  <div class="problem-grid">
+    <div class="prob-card fade-in">
+      <div class="prob-icon">🛒</div>
+      <h3>Abandoned Carts Are Draining Revenue</h3>
+      <p>On average, 70% of customers who add items to cart never complete the purchase. Most stores send one generic email — hours later — and wonder why it doesn't work. The window to recover that sale is narrow, and manual follow-up is too slow.</p>
+      <div class="prob-stat">⚠ Avg. 70% cart abandonment rate across Shopify stores</div>
     </div>
-    <div class="feat-card fade-in">
-      <div class="feat-icon">🤖</div>
-      <h3>AI Chatbots &amp; Virtual Assistants</h3>
-      <p>Smart chatbots that understand your customers, answer product questions, handle common support requests, and pass complex issues to your team — available 24/7 on WhatsApp, Telegram, or your website.</p>
+    <div class="prob-card fade-in">
+      <div class="prob-icon">⏱</div>
+      <h3>Slow Responses Are Costing You Customers</h3>
+      <p>When a customer asks a question — about sizing, delivery, returns — every hour you take to respond is a chance for them to buy from a competitor. No team can be online 24/7. But your customers expect instant answers, especially on WhatsApp.</p>
+      <div class="prob-stat">⚠ 90% of customers expect a reply within 10 minutes</div>
     </div>
-    <div class="feat-card wide fade-in">
-      <div class="feat-icon">⚡</div>
-      <h3>End-to-End Business Automation</h3>
-      <p>I connect all your apps into one seamless automated pipeline — from the moment something happens in your business, to the moment it's resolved — with zero manual steps in between.</p>
-      <div class="flow-diagram">
-        <div class="flow-node"><div class="node-icon">🛒</div>Customer Action</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node"><div class="node-icon">⚡</div>Automation Triggered</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node"><div class="node-icon">🧠</div>AI Processes</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node"><div class="node-icon">💬</div>Customer Notified</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node"><div class="node-icon">📊</div>CRM Updated</div>
-      </div>
-    </div>
-    <div class="feat-card fade-in">
-      <div class="feat-icon">📊</div>
-      <h3>Lead Management &amp; CRM Automation</h3>
-      <p>Every new lead gets automatically captured, scored, added to your CRM, and followed up — with your team getting instant alerts only for the hottest prospects. Nothing falls through the cracks.</p>
-    </div>
-    <div class="feat-card fade-in">
-      <div class="feat-icon">🔗</div>
-      <h3>App &amp; Platform Integration</h3>
-      <p>Got apps that don't talk to each other? I connect Shopify, WhatsApp, Stripe, Google Sheets, and more into one unified system — so data flows automatically wherever it needs to go.</p>
+    <div class="prob-card fade-in">
+      <div class="prob-icon">🔁</div>
+      <h3>Manual Work Is Eating Your Team's Time</h3>
+      <p>Copy-pasting order data, manually sending confirmations, updating spreadsheets, chasing leads — these tasks feel small individually, but they add up to hours of expensive, error-prone effort every single day. Time your team should spend on growth.</p>
+      <div class="prob-stat">⚠ Small teams lose 4–6 hours/day to repetitive manual tasks</div>
     </div>
   </div>
 </section>
+</div>
 
 <div class="divider"></div>
 
-<!-- SERVICES -->
-<section id="services">
+<!-- SOLUTION -->
+<section id="solution">
   <div class="fade-in">
-    <div class="section-label">Services</div>
-    <h2 class="section-title">Exactly what you're<br/>paying for</h2>
-    <p class="section-sub">No vague deliverables. Each service is a concrete system you'll own and use — built fast, documented clearly.</p>
+    <div class="section-chip">The Solution</div>
+    <h2 class="stitle">AI automation that solves<br/>each problem directly</h2>
+    <p class="ssub">I don't sell automation for its own sake. Every system I build is tied to a specific business outcome — more revenue recovered, faster response times, fewer manual hours.</p>
   </div>
-  <div class="services-grid">
-    <div class="svc-card fade-in">
-      <div class="svc-num">01</div>
-      <h3>Business Workflow Automation</h3>
-      <p>I map out your manual processes, identify where time is being wasted, and build an automated system that handles it all — with full documentation so your team understands exactly how it works.</p>
-      <div class="svc-tags"><span class="tag">Process Mapping</span><span class="tag">Webhooks</span><span class="tag">Zapier Migration</span></div>
+  <div class="solution-grid">
+    <div class="sol-card fade-in">
+      <div class="sol-icon">💬</div>
+      <h3>Automated Cart Recovery via WhatsApp</h3>
+      <p>Within minutes of cart abandonment, your customer gets a personalised WhatsApp message — crafted by AI using their name and exact products. The system follows up automatically and handles their objections in real time. No human needed.</p>
+      <div class="sol-result">Recover 15–25% of abandoned carts</div>
     </div>
-    <div class="svc-card fade-in">
-      <div class="svc-num">02</div>
-      <h3>AI Agent Development</h3>
-      <p>Custom AI assistants trained on your business data — product catalogues, FAQs, pricing, policies. They answer customer questions accurately and escalate to humans when needed.</p>
-      <div class="svc-tags"><span class="tag">OpenAI GPT-4</span><span class="tag">Knowledge Base</span><span class="tag">Multi-channel</span></div>
+    <div class="sol-card fade-in">
+      <div class="sol-icon">🤖</div>
+      <h3>24/7 AI Customer Support</h3>
+      <p>An intelligent assistant trained on your products, policies, and FAQs handles customer questions instantly — day or night. It knows when to answer, when to escalate, and never gives wrong information. Response time drops from hours to under 30 seconds.</p>
+      <div class="sol-result">Cut response time from hours to &lt;30 seconds</div>
     </div>
-    <div class="svc-card fade-in">
-      <div class="svc-num">03</div>
-      <h3>E-Commerce Automation</h3>
-      <p>Complete automation stack for online stores — cart recovery, order confirmation, shipping updates, review requests, and upsell messages — all sent automatically via WhatsApp.</p>
-      <div class="svc-tags"><span class="tag">Shopify</span><span class="tag">WhatsApp</span><span class="tag">Meta API</span></div>
-    </div>
-    <div class="svc-card fade-in">
-      <div class="svc-num">04</div>
-      <h3>CRM &amp; Lead Pipeline Setup</h3>
-      <p>A custom CRM system built for how your business actually works — with automatic lead scoring, follow-up reminders, team notifications, and a live dashboard to track everything.</p>
-      <div class="svc-tags"><span class="tag">Airtable</span><span class="tag">Power BI</span><span class="tag">SQL</span></div>
-    </div>
-    <div class="svc-card fade-in">
-      <div class="svc-num">05</div>
-      <h3>Data &amp; Reporting Dashboards</h3>
-      <p>Stop copying data between spreadsheets. I build automated data pipelines that pull from all your sources and display everything in a clean, real-time dashboard your whole team can use.</p>
-      <div class="svc-tags"><span class="tag">PostgreSQL</span><span class="tag">Power BI</span><span class="tag">Google Sheets</span></div>
-    </div>
-    <div class="svc-card fade-in">
-      <div class="svc-num">06</div>
-      <h3>Automation Audit &amp; Roadmap</h3>
-      <p>Not sure where to start? I'll audit your current tools and processes, identify the highest-impact automation opportunities, and hand you a prioritised roadmap — no commitment required.</p>
-      <div class="svc-tags"><span class="tag">Free Consultation</span><span class="tag">Strategy</span><span class="tag">Roadmap</span></div>
+    <div class="sol-card fade-in">
+      <div class="sol-icon">⚙️</div>
+      <h3>Full Business Workflow Automation</h3>
+      <p>Order confirmations, inventory alerts, lead follow-ups, CRM updates, daily reports — all automated. Your team stops doing data entry and starts doing actual work. Built once, runs forever, with full logging so you always know what's happening.</p>
+      <div class="sol-result">Save 4–6 hours of manual work per day</div>
     </div>
   </div>
 </section>
@@ -502,51 +434,338 @@
 <div class="divider"></div>
 
 <!-- CASE STUDIES -->
-<section id="work">
+<section id="cases">
   <div class="fade-in">
-    <div class="section-label">Case Studies</div>
-    <h2 class="section-title">Real results from<br/>real projects</h2>
-    <p class="section-sub">Here's what I've actually built and shipped — with the numbers to prove it worked.</p>
+    <div class="section-chip">Case Studies</div>
+    <h2 class="stitle">Real systems. Real results.<br/>Not demos.</h2>
+    <p class="ssub">Every project below was built for a real business problem — with production reliability, fallback handling, and measurable outcomes.</p>
   </div>
+
   <div class="cases-grid">
+
+    <!-- CASE 1 -->
     <div class="case-card fade-in">
-      <div class="case-industry"><span class="case-tag">E-Commerce</span><span class="case-icon">🛒</span></div>
-      <h3>Recovering Lost Sales via WhatsApp for a Shopify Store</h3>
-      <p>Built a fully automated cart recovery system — when a customer abandons their cart, an AI-generated WhatsApp message goes out within minutes, personalised to their exact products. It holds a real conversation and handles objections on its own.</p>
-      <div class="case-metrics">
-        <div class="metric"><div class="val">3×</div><div class="lbl">More recovered vs email</div></div>
-        <div class="metric"><div class="val">~0</div><div class="lbl">Manual work required</div></div>
-        <div class="metric"><div class="val">24/7</div><div class="lbl">Runs on its own</div></div>
+      <div class="case-header">
+        <div class="case-meta">
+          <span class="case-tag">E-Commerce · Cart Recovery</span>
+          <h3>Recovered ₹2.4L in Lost Revenue with an Automated WhatsApp Cart Recovery System</h3>
+        </div>
+        <div class="case-metrics-row">
+          <div class="metric-badge"><div class="val">22%</div><div class="lbl">Carts recovered</div></div>
+          <div class="metric-badge"><div class="val">₹2.4L</div><div class="lbl">Revenue recovered</div></div>
+          <div class="metric-badge"><div class="val">~0</div><div class="lbl">Manual effort</div></div>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-block">
+          <h4>The Problem</h4>
+          <p>A Shopify clothing brand averaging 80+ orders/day was losing roughly 65% of customers at checkout. Their only recovery tool was a single email sent 24 hours later — by which time most customers had moved on. The founder was manually following up on high-value carts via WhatsApp, which was unsustainable and slow.</p>
+        </div>
+        <div class="case-block">
+          <h4>The Solution</h4>
+          <p>Built a fully automated, AI-powered cart recovery system that triggers within 15 minutes of abandonment. It sends a personalised WhatsApp message using the customer's name and exact abandoned products, follows up twice more at strategic intervals, and handles customer objections conversationally — no human needed at any step.</p>
+        </div>
+      </div>
+      <div class="workflow-steps">
+        <h4>Workflow Breakdown</h4>
+        <div class="wf-track">
+          <div class="wf-step arch-s1">
+            <div class="ws-label">Trigger</div>
+            <div class="ws-val">Shopify webhook fires on cart abandonment event</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s2">
+            <div class="ws-label">Validation</div>
+            <div class="ws-val">Checks: phone number present, cart value &gt; ₹500, not already messaged</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s3">
+            <div class="ws-label">AI Logic</div>
+            <div class="ws-val">GPT-4 generates personalised message with product names &amp; urgency tone</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s4">
+            <div class="ws-label">Action</div>
+            <div class="ws-val">WhatsApp message sent via Meta Cloud API with direct checkout link</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s5">
+            <div class="ws-label">Fallback</div>
+            <div class="ws-val">If WhatsApp fails → email sent automatically via SMTP</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s6">
+            <div class="ws-label">Logging</div>
+            <div class="ws-val">All events stored in Google Sheets dashboard for monitoring</div>
+          </div>
+        </div>
+      </div>
+      <div class="reliability-box">
+        <h4>Reliability &amp; Error Handling</h4>
+        <div class="rel-items">
+          <div class="rel-item">If WhatsApp API is down, system automatically falls back to email — zero missed follow-ups</div>
+          <div class="rel-item">If phone number is missing or invalid, cart is flagged and skipped without crashing the system</div>
+          <div class="rel-item">Automatic retry logic: if delivery fails, it retries 3 times before switching to fallback</div>
+          <div class="rel-item">Every event logged with timestamp, status, and error code for full visibility and debugging</div>
+        </div>
       </div>
     </div>
+
+    <!-- CASE 2 -->
     <div class="case-card fade-in">
-      <div class="case-industry"><span class="case-tag">Sales Operations</span><span class="case-icon">📊</span></div>
-      <h3>Automating Lead Qualification for a Services Business</h3>
-      <p>Every enquiry from their website was being handled manually. I built an automated pipeline — leads get scored by AI, added to the CRM, and the sales team gets a Slack alert with a summary. Hot leads get an immediate follow-up email.</p>
-      <div class="case-metrics">
-        <div class="metric"><div class="val">80%</div><div class="lbl">Less admin time</div></div>
-        <div class="metric"><div class="val">100%</div><div class="lbl">Leads auto-logged</div></div>
-        <div class="metric"><div class="val">2 days</div><div class="lbl">Build time</div></div>
+      <div class="case-header">
+        <div class="case-meta">
+          <span class="case-tag">Sales Operations · Lead Automation</span>
+          <h3>Eliminated 5 Hours of Daily Manual Work with an Automated Lead Qualification Pipeline</h3>
+        </div>
+        <div class="case-metrics-row">
+          <div class="metric-badge"><div class="val">5 hrs</div><div class="lbl">Saved daily</div></div>
+          <div class="metric-badge"><div class="val">100%</div><div class="lbl">Leads auto-processed</div></div>
+          <div class="metric-badge"><div class="val">&lt;60s</div><div class="lbl">Lead response time</div></div>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-block">
+          <h4>The Problem</h4>
+          <p>A B2B services company was receiving 30–50 leads per day through their website. Every lead had to be manually read, categorised, entered into the CRM, and followed up on — a process that took 5+ hours daily and was riddled with errors and delays. Hot leads were going cold while the team was buried in admin work.</p>
+        </div>
+        <div class="case-block">
+          <h4>The Solution</h4>
+          <p>Built an end-to-end automated lead pipeline. Every incoming enquiry is processed by AI which scores lead quality, extracts key details, auto-populates the CRM, and triggers the appropriate follow-up — all within 60 seconds of form submission. The sales team only sees qualified, pre-scored leads with a full summary ready.</p>
+        </div>
+      </div>
+      <div class="workflow-steps">
+        <h4>Workflow Breakdown</h4>
+        <div class="wf-track">
+          <div class="wf-step arch-s1">
+            <div class="ws-label">Trigger</div>
+            <div class="ws-val">Form submission webhook fires on lead capture</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s2">
+            <div class="ws-label">Validation</div>
+            <div class="ws-val">Checks for required fields, filters spam, deduplicates existing contacts</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s3">
+            <div class="ws-label">AI Scoring</div>
+            <div class="ws-val">GPT-4 reads the enquiry and assigns Hot / Warm / Cold with reasoning</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s4">
+            <div class="ws-label">Action</div>
+            <div class="ws-val">CRM auto-updated + Slack alert sent to sales team with full AI summary</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s5">
+            <div class="ws-label">Fallback</div>
+            <div class="ws-val">If CRM API fails → lead stored in Google Sheets and team alerted via email</div>
+          </div>
+          <div class="wf-arrow">→</div>
+          <div class="wf-step arch-s6">
+            <div class="ws-label">Logging</div>
+            <div class="ws-val">Full audit trail: lead score, processing time, actions taken, errors if any</div>
+          </div>
+        </div>
+      </div>
+      <div class="reliability-box">
+        <h4>Reliability &amp; Error Handling</h4>
+        <div class="rel-items">
+          <div class="rel-item">If CRM API is unavailable, leads are safely stored in Google Sheets — nothing is ever lost</div>
+          <div class="rel-item">Duplicate detection prevents the same lead being entered twice across channels</div>
+          <div class="rel-item">If AI scoring fails, lead is flagged for manual review instead of being silently skipped</div>
+          <div class="rel-item">Daily summary report sent to manager with total leads, scores breakdown, and any errors</div>
+        </div>
       </div>
     </div>
-    <div class="case-card fade-in">
-      <div class="case-industry"><span class="case-tag">Customer Support</span><span class="case-icon">💬</span></div>
-      <h3>24/7 AI Support Bot That Knows Your Products</h3>
-      <p>Deployed an AI chatbot trained on the client's full product catalogue and FAQs. It handles returns, shipping queries, and product questions instantly — and escalates to a human only when it genuinely can't help.</p>
-      <div class="case-metrics">
-        <div class="metric"><div class="val">70%</div><div class="lbl">Support tickets eliminated</div></div>
-        <div class="metric"><div class="val">&lt;2s</div><div class="lbl">Average response time</div></div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ARCHITECTURE -->
+<div class="arch-section">
+<section id="arch">
+  <div class="fade-in">
+    <div class="section-chip">How It Works</div>
+    <h2 class="stitle">Every system I build follows<br/>the same reliable structure</h2>
+    <p class="ssub">This isn't just a workflow — it's a production-grade system architecture. Built so it can fail gracefully, recover automatically, and always tell you what's happening.</p>
+  </div>
+  <div class="arch-flow">
+    <div class="arch-step arch-s1 fade-in">
+      <div class="arch-circle">⚡</div>
+      <h4>Trigger</h4>
+      <p>Something happens in your business — a cart abandoned, a form submitted, an order placed</p>
+    </div>
+    <div class="arch-connector fade-in">→</div>
+    <div class="arch-step arch-s2 fade-in">
+      <div class="arch-circle">✅</div>
+      <h4>Validation</h4>
+      <p>Data is checked — is it complete? Is it a duplicate? Is it worth processing?</p>
+    </div>
+    <div class="arch-connector fade-in">→</div>
+    <div class="arch-step arch-s3 fade-in">
+      <div class="arch-circle">🧠</div>
+      <h4>Logic</h4>
+      <p>AI decides what action to take based on the data — personalised, contextual, accurate</p>
+    </div>
+    <div class="arch-connector fade-in">→</div>
+    <div class="arch-step arch-s4 fade-in">
+      <div class="arch-circle">🚀</div>
+      <h4>Action</h4>
+      <p>Message sent, CRM updated, alert fired — the right outcome, to the right place</p>
+    </div>
+    <div class="arch-connector fade-in">→</div>
+    <div class="arch-step arch-s5 fade-in">
+      <div class="arch-circle">🛡</div>
+      <h4>Fallback</h4>
+      <p>If the primary action fails — API down, data missing — a backup kicks in automatically</p>
+    </div>
+    <div class="arch-connector fade-in">→</div>
+    <div class="arch-step arch-s6 fade-in">
+      <div class="arch-circle">📊</div>
+      <h4>Logging</h4>
+      <p>Every event is recorded — what happened, when, what succeeded, what failed, and why</p>
+    </div>
+  </div>
+  <div class="arch-cards">
+    <div class="arch-card fade-in">
+      <h4>🛡 Why fallback systems matter</h4>
+      <p>External APIs — WhatsApp, Shopify, CRMs — go down. Without a fallback, your system silently fails and you lose data. Every system I build has a backup path so nothing is ever dropped, even when third-party services have outages.</p>
+    </div>
+    <div class="arch-card fade-in">
+      <h4>📋 Why logging matters</h4>
+      <p>You can't fix what you can't see. Every automation I build writes a log of what it did, when, and whether it succeeded. This means bugs are caught fast, performance is measurable, and you always have proof of every action taken.</p>
+    </div>
+    <div class="arch-card fade-in">
+      <h4>✅ Why validation matters</h4>
+      <p>Bad data in = broken system out. Before any action runs, I validate the incoming data — checking for missing fields, invalid formats, and edge cases. This prevents crashes, errors, and incorrect actions that would embarrass your business.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- WHY ME -->
+<section id="why">
+  <div class="fade-in">
+    <div class="section-chip">Why Choose Me</div>
+    <h2 class="stitle">I build systems.<br/>Not just workflows.</h2>
+    <p class="ssub">Anyone can connect two apps with a drag-and-drop tool. I build production-grade automation systems that handle real-world failures, scale with your business, and never leave you guessing.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card fade-in">
+      <div class="why-icon">📐</div>
+      <div>
+        <h3>I never build without a clear design first</h3>
+        <p>Before writing a single line of automation, I map out the full system — every trigger, every branch, every edge case. This means fewer surprises, cleaner builds, and a system that actually does what you expect.</p>
       </div>
     </div>
-    <div class="case-card fade-in">
-      <div class="case-industry"><span class="case-tag">Data &amp; Analytics</span><span class="case-icon">⚙️</span></div>
-      <h3>One Dashboard for All Business Data — Updated Daily</h3>
-      <p>The client was manually downloading reports from 4 different platforms every week. I built an automated pipeline that pulls everything together into a single executive dashboard — refreshed every morning, no exports needed.</p>
-      <div class="case-metrics">
-        <div class="metric"><div class="val">4</div><div class="lbl">Data sources unified</div></div>
-        <div class="metric"><div class="val">Daily</div><div class="lbl">Auto-refreshed</div></div>
+    <div class="why-card fade-in">
+      <div class="why-icon">🧪</div>
+      <div>
+        <h3>I never deploy without thorough testing</h3>
+        <p>Every workflow is tested with real data scenarios — including failure cases, missing data, and API outages — before it touches your live business. You don't find out about bugs when they hit your customers.</p>
       </div>
     </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">📋</div>
+      <div>
+        <h3>I never run without logging and monitoring</h3>
+        <p>Every system I build has a logging layer — you can see exactly what ran, when, and whether it succeeded. No black boxes. No mystery failures. Just full visibility into your automation at all times.</p>
+      </div>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">🛡</div>
+      <div>
+        <h3>I never trust external APIs blindly</h3>
+        <p>WhatsApp goes down. Shopify has outages. Payment gateways timeout. I build every system with the assumption that external services will fail — so your automation keeps running even when they do.</p>
+      </div>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">🎯</div>
+      <div>
+        <h3>I focus on your business outcome, not the tools</h3>
+        <p>I don't get excited about software. I get excited about results — recovered revenue, saved hours, faster responses. Every decision I make during a project is tied back to one question: does this make your business more money?</p>
+      </div>
+    </div>
+    <div class="why-card fade-in">
+      <div class="why-icon">📖</div>
+      <div>
+        <h3>I document everything so you're never dependent on me</h3>
+        <p>Every system comes with clear documentation — what it does, how it works, and how to manage it. You own what I build. Your team can understand it. And if you ever need changes, you won't be stuck waiting on me.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="fade-in">
+    <div class="section-chip">Pricing</div>
+    <h2 class="stitle">Transparent pricing.<br/>You own everything I build.</h2>
+    <p class="ssub">No retainer traps. No lock-in. Pay per project, get a fully documented system that your team can manage independently.</p>
+  </div>
+  <div class="pricing-grid">
+
+    <div class="price-card fade-in">
+      <div class="price-tier">Starter</div>
+      <div class="price-amt"><sup>₹</sup>5,000</div>
+      <div class="price-range">– ₹10,000 depending on scope</div>
+      <p class="price-desc">Best for businesses that want to automate one specific task — and see real results before committing to a bigger system.</p>
+      <ul class="price-features">
+        <li>1 complete automation workflow</li>
+        <li>Connects up to 2 platforms (e.g. Shopify + WhatsApp)</li>
+        <li>Fallback &amp; error handling included</li>
+        <li>Event logging so you can monitor it</li>
+        <li>Video walkthrough on delivery</li>
+        <li>7 days post-delivery support</li>
+      </ul>
+      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started →</button>
+    </div>
+
+    <div class="price-card featured fade-in">
+      <div class="pop-badge">Most Popular</div>
+      <div class="price-tier">Growth</div>
+      <div class="price-amt"><sup>₹</sup>15,000</div>
+      <div class="price-range">– ₹30,000 depending on scope</div>
+      <p class="price-desc">For Shopify stores ready to automate multiple workflows — cart recovery, lead management, and customer support — into one connected system.</p>
+      <ul class="price-features">
+        <li>2–3 connected automation workflows</li>
+        <li>AI-powered messaging or chatbot</li>
+        <li>CRM integration &amp; lead pipeline</li>
+        <li>Performance optimisation included</li>
+        <li>Full logging &amp; monitoring dashboard</li>
+        <li>Priority support — 14 days included</li>
+        <li>1 free update after delivery</li>
+      </ul>
+      <button class="btn-price primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Call →</button>
+    </div>
+
+    <div class="price-card fade-in">
+      <div class="price-tier">Advanced</div>
+      <div class="price-amt"><sup>₹</sup>40,000</div>
+      <div class="price-range">– ₹80,000 depending on scope</div>
+      <p class="price-desc">For growing Shopify brands doing consistent volume — a complete, enterprise-grade automation infrastructure built to scale with your business.</p>
+      <ul class="price-features">
+        <li>4–6 advanced multi-step workflows</li>
+        <li>Full system architecture design</li>
+        <li>AI agent with custom knowledge base</li>
+        <li>WhatsApp + Email multi-channel automation</li>
+        <li>Advanced logic: conditions, segmentation, branching</li>
+        <li>CRM + database integration</li>
+        <li>API failure handling + full retry system</li>
+        <li>Performance &amp; reliability optimisation</li>
+        <li>Executive reporting dashboard</li>
+        <li>14–30 days priority support</li>
+      </ul>
+      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Let's Talk →</button>
+    </div>
+
   </div>
 </section>
 
@@ -555,9 +774,9 @@
 <!-- TECH STACK -->
 <section>
   <div class="fade-in">
-    <div class="section-label">Tech Stack</div>
-    <h2 class="section-title">Tools I use to<br/>build your system</h2>
-    <p class="section-sub">Every tool in this list is production-tested — not just something that sounds impressive.</p>
+    <div class="section-chip">Tech Stack</div>
+    <h2 class="stitle">Production-tested tools.<br/>Not hype.</h2>
+    <p class="ssub">Every tool I use has been chosen for reliability, integration quality, and real-world performance — not because it's trending.</p>
   </div>
   <div class="stack-grid">
     <div class="stack-pill fade-in"><span class="emoji">⚡</span>n8n</div>
@@ -575,69 +794,14 @@
   </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="fade-in">
-    <div class="section-label">Pricing</div>
-    <h2 class="section-title">Straightforward pricing.<br/>No surprises.</h2>
-    <p class="section-sub">You pay per project. You own everything I build. No monthly fees, no lock-in — just a working system delivered to you.</p>
-  </div>
-  <div class="pricing-grid">
-    <div class="price-card fade-in">
-      <div class="price-tier">Starter</div>
-      <div class="price-amt"><sup>₹</sup>4,999<span class="per"> / project</span></div>
-      <p class="price-desc">Perfect for businesses that want to automate one specific task and see the results before investing further.</p>
-      <ul class="price-features">
-        <li>One focused automation system</li>
-        <li>Connects up to 2 apps (e.g. Shopify + WhatsApp)</li>
-        <li>2 rounds of revisions included</li>
-        <li>Video walkthrough on delivery</li>
-        <li>7 days of post-delivery support</li>
-      </ul>
-      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
-    </div>
-    <div class="price-card featured fade-in">
-      <div class="popular-badge">Most Popular</div>
-      <div class="price-tier">Growth</div>
-      <div class="price-amt"><sup>₹</sup>8,999<span class="per"> / project</span></div>
-      <p class="price-desc">A complete automation system with AI. Best for e-commerce stores and businesses ready to scale their operations.</p>
-      <ul class="price-features">
-        <li>Full automation pipeline (no node limits)</li>
-        <li>AI-powered messaging or chatbot included</li>
-        <li>Connects up to 5 apps</li>
-        <li>WhatsApp or Telegram deployment</li>
-        <li>Optional reporting dashboard</li>
-        <li>30 days support + 1 free update</li>
-      </ul>
-      <button class="btn-price primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Call</button>
-    </div>
-    <div class="price-card fade-in">
-      <div class="price-tier">Advanced</div>
-      <div class="price-amt"><sup>₹</sup>14,999<span class="per"> / project</span></div>
-      <p class="price-desc">A large-scale, multi-system automation project — or an ongoing partnership where I handle all your automation needs month to month.</p>
-      <ul class="price-features">
-        <li>Complex multi-system automation</li>
-        <li>Full AI agent with custom knowledge base</li>
-        <li>Unlimited app connections</li>
-        <li>Executive reporting dashboard</li>
-        <li>Priority delivery (&lt;48h turnaround)</li>
-        <li>Dedicated support channel</li>
-      </ul>
-      <button class="btn-price" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Let's Talk</button>
-    </div>
-  </div>
-</section>
-
 <!-- CTA -->
 <div class="cta-section scroll-target" id="contact">
   <div class="cta-box">
-    <div class="section-label" style="margin:0 auto 20px;display:table;">Let's Talk</div>
-    <h2>Not sure where to start?<br/><span class="grad">Let's figure it out together.</span></h2>
-    <p>Tell me what's eating your team's time — I'll tell you exactly what to automate and how long it'll take. Free 30-minute call, no commitment.</p>
+    <div class="section-chip" style="margin:0 auto 20px;display:table;">Free Audit Call</div>
+    <h2>Not sure where you're<br/><span class="grad">losing revenue?</span></h2>
+    <p>Book a free 30-minute call. Tell me about your Shopify store and your current process — I'll identify exactly where automation can save you money and time, and give you a clear plan. No pitch. No commitment.</p>
     <div class="cta-row">
-      <a href="mailto:mohamedanazcareer@gmail.com" class="btn-primary">📅 Book a Free Call</a>
+      <a href="/cdn-cgi/l/email-protection#6904060108040c0d080708130a081b0c0c1b290e04080005470a0604" class="btn-primary">📅 Book a Free Audit Call</a>
       <a href="https://wa.me/918122114041" class="btn-secondary">💬 Message on WhatsApp</a>
     </div>
   </div>
@@ -659,58 +823,40 @@
   </div>
   <div class="footer-right">
     <ul class="footer-links">
-      <li><a href="#features">What I Build</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#work">Case Studies</a></li>
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#cases">Case Studies</a></li>
+      <li><a href="#arch">How It Works</a></li>
+      <li><a href="#why">Why Me</a></li>
       <li><a href="#pricing">Pricing</a></li>
     </ul>
     <p>© 2026 Mohamed Anas · AI Automation Specialist · Chennai, India</p>
   </div>
 </footer>
 
-<script>
-  // ── Mobile menu ──
-  function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const btn  = document.getElementById('menuBtn');
-    const open = menu.classList.toggle('open');
-    btn.textContent = open ? '✕' : '☰';
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-  function closeMenu() {
-    document.getElementById('mobileMenu').classList.remove('open');
-    document.getElementById('menuBtn').textContent = '☰';
-    document.body.style.overflow = '';
-  }
-  window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu(); });
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function toggleMenu(){
+  const m=document.getElementById('mobileMenu'),b=document.getElementById('menuBtn');
+  const open=m.classList.toggle('open');
+  b.textContent=open?'✕':'☰';
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('menuBtn').textContent='☰';
+  document.body.style.overflow='';
+}
+window.addEventListener('resize',()=>{if(window.innerWidth>900)closeMenu();});
 
-  // ── Scroll animation (never hides — just slides) ──
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0, rootMargin: '0px 0px -30px 0px' });
+// Scroll animation — opacity always 1, only slides
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:0,rootMargin:'0px 0px -20px 0px'});
 
-  // Stagger grid children
-  document.querySelectorAll('.features-grid .fade-in, .services-grid .fade-in, .cases-grid .fade-in, .pricing-grid .fade-in, .stack-grid .fade-in').forEach((el, i) => {
-    el.style.transitionDelay = (i % 4) * 0.09 + 's';
-  });
+document.querySelectorAll('.problem-grid .fade-in,.solution-grid .fade-in,.cases-grid .fade-in,.pricing-grid .fade-in,.stack-grid .fade-in,.why-grid .fade-in,.arch-cards .fade-in,.stat-inner .fade-in').forEach((el,i)=>{
+  el.style.transitionDelay=(i%4)*0.08+'s';
+});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+setTimeout(()=>{document.querySelectorAll('.fade-in:not(.visible)').forEach(el=>el.classList.add('visible'));},800);
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // Force-show anything still hidden after 1s (safety net)
-  setTimeout(() => {
-    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => el.classList.add('visible'));
-  }, 1000);
-
-  // ── Nav border on scroll ──
-  window.addEventListener('scroll', () => {
-    document.getElementById('mainNav').style.borderBottomColor =
-      window.scrollY > 40 ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.07)';
-  }, { passive: true });
-</script>
-</body>
-</html>
+window.addEventListener('scroll',()=>{
+  document.getElementB
